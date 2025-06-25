@@ -1,0 +1,3 @@
+1. Accepting a pandas dataframe, consisting of OHLCV data from the user to predict prices using Monte Carlo Simulation.
+2. Currently the Monte Carlo model is predicting data only for a single timestamp. Figure out how to plot the predicted   
+   price as a function of time.
