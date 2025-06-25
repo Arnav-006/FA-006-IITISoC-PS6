@@ -34,7 +34,15 @@ class MonteCarlo:
         self.volsdt = self.vol*np.sqrt(self.dt)
         self.lnS = np.log(self.S)
 
-    def simulate(self):
+    def calculate_option_price(self, lnSt, dev):
+        # Compute Expectation and SE
+        ST = np.exp(lnSt) + dev
+        CT = np.maximum(0, ST - self.K)
+        C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
+
+        return C0, CT
+
+    def calculate_stock_price(self):
         self.compute_constants()
 
         # Monte Carlo Simulation
@@ -43,10 +51,11 @@ class MonteCarlo:
         lnSt = self.lnS + np.cumsum(delta_lnSt, axis=0)
         lnSt = np.concatenate( (np.full(shape=(1, MonteCarlo.M), fill_value=self.lnS), lnSt ) )
 
-        # Compute Expectation and SE
-        ST = np.exp(lnSt)
-        CT = np.maximum(0, ST - self.K)
-        C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
+        return lnSt
+
+    def simulate(self):
+
+        C0, CT = self.calculate(self.calculate_stock_price(), 0)
 
         sigma = np.sqrt( np.sum( (CT[-1] - C0)**2) / (MonteCarlo.M-1) )
         SE = sigma/np.sqrt(MonteCarlo.M)
