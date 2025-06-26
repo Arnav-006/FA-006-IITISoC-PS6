@@ -1,4 +1,5 @@
 from models.Monte_Carlo import MonteCarlo 
+from models.Black_Scholes import BlackScholes
 
 """
 The plan is to implement the greek functions on the objects of the models which would have parameters 
