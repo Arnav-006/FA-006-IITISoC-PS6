@@ -17,7 +17,8 @@ def delta(type, obj, dev):
             # Change of $1 assumed in the stock price
             return montecarlo.calculate_option_price(montecarlo.calculate_stock_price(), 1+dev)[0]-montecarlo.calculate_option_price(montecarlo.calculate_stock_price(), 0+dev)[0]
         case 'BS':
-            pass
+            bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+            return bs.delta(option_type=obj.option_type)
         case 'BOPM':
             pass
 
@@ -33,7 +34,8 @@ def gamma(type, obj):
             """
             return (delta_2 - delta_1) / 2
         case 'BS':
-            pass
+            bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+            return bs.gamma()
         case 'BOPM':
             pass
 
@@ -42,7 +44,8 @@ def theta(type, obj):
         case 'MC':
             montecarlo=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T)
         case 'BS':
-            pass
+            bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+            return bs.theta(option_type=obj.option_type)
         case 'BOPM':
             pass
 
@@ -51,6 +54,7 @@ def vega(type, obj):
         case 'MC':
             montecarlo=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T)
         case 'BS':
-            pass
+             bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+            return bs.vega()
         case 'BOPM':
             pass
