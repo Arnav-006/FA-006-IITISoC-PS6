@@ -56,6 +56,6 @@ def vega(type, obj):
             montecarlo=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T)
         case 'BS':
              bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
-            return bs.vega()
+             return bs.vega()
         case 'BOPM':
             pass
