@@ -37,8 +37,11 @@ class MonteCarlo:
     def calculate_option_price(self, lnSt, dev):
         # Compute Expectation and SE
         ST = np.exp(lnSt) + dev
+        # For call option
         CT = np.maximum(0, ST - self.K)
         C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
+
+        #Need a formula for put option
 
         return C0, CT
 
