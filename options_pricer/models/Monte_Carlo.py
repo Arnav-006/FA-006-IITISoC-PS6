@@ -7,25 +7,31 @@ import matplotlib.pyplot as plt
 from pandas_datareader import data as pdr
 
 class MonteCarlo:
-    N=100
+    N=1000
     M=10000
     """
         N: number of time steps
         M: number of simulations
     """
 
-    def __init__(self, S, K, vol, r, T):
+    """
+    In order to implement theta option Greek we need to accept a deviation parameter 'dev' for time to maturiy.
+    """
+
+    def __init__(self, S, K, vol, r, T, option_type, dev_1=0, dev_2=0):
         self.S = S  
         self.K = K
-        self.vol = vol
+        self.vol = vol+dev_2
         self.r = r
-        self.T = T
+        self.T = T+dev_1
+        self.option_type = option_type
         """
         S: stock price
         K: strike price
         vol: volatility
         r: risk-free interest rate
         T: time to maturity in years
+        type: 'call' or 'put'
         """
 
     def compute_constants(self):
@@ -34,14 +40,18 @@ class MonteCarlo:
         self.volsdt = self.vol*np.sqrt(self.dt)
         self.lnS = np.log(self.S)
 
-    def calculate_option_price(self, lnSt, dev):
+    def calculate_option_price(self, lnSt, dev=0):
         # Compute Expectation and SE
         ST = np.exp(lnSt) + dev
-        # For call option
-        CT = np.maximum(0, ST - self.K)
-        C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
 
-        #Need a formula for put option
+        if self.option_type == 'call':
+            # For call option
+            CT = np.maximum(0, ST - self.K)
+            C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
+        elif self.option_type == 'put':
+            # For put option
+            CT = np.maximum(0, self.K - ST)
+            C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
 
         return C0, CT
 
@@ -58,7 +68,7 @@ class MonteCarlo:
 
     def simulate(self):
 
-        C0, CT = self.calculate(self.calculate_stock_price(), 0)
+        C0, CT = self.calculate_option_price(self.calculate_stock_price())
 
         sigma = np.sqrt( np.sum( (CT[-1] - C0)**2) / (MonteCarlo.M-1) )
         SE = sigma/np.sqrt(MonteCarlo.M)
