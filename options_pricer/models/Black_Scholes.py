@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
-import plotly.graph_objs as go
-from plotly.subplots import make_subplots
+
 
 class BlackScholes:
     def __init__(self, S, K, sigma, r, T):
