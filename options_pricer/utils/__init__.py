@@ -1,3 +1,3 @@
-from .Greeks import delta
+from .Greeks import delta, gamma, theta, vega
 
-__all__ = ['delta']
+__all__ = ['delta', 'gamma', 'theta', 'vega']
