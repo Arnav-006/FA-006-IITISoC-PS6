@@ -11,6 +11,7 @@ dependencies = [
   "scipy>=1.6.0",
   "matplotlib>=3.3.0",
   "pandas_datareader>=0.10.0",
+  "plotly>=2.34.0"
 ]
 
 [project.scripts]
