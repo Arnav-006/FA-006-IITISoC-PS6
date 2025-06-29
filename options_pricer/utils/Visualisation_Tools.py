@@ -55,7 +55,8 @@ class BS_Options_Visualizer:
         fig.show()
 
 # --- Run Visualization ---
-vis = BS_Options_Visualizer(K=17750, r=0.10, sigma=0.0839, T=6/365)
-vis.generate_data()
-vis.plot()
-vis.save_to_excel()
+
+# vis = BS_Options_Visualizer(K=17750, r=0.10, sigma=0.0839, T=6/365)
+# vis.generate_data()
+# vis.plot()
+# vis.save_to_excel()
