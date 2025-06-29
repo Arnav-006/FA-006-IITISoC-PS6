@@ -1,3 +1,7 @@
 # Byte‑compiled / optimized files
 __pycache__/
 *.py[cod]
+
+# Coverage reports
+.coverage
+htmlcov/
