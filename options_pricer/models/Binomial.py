@@ -50,8 +50,11 @@ class Binomial:
         self.discount = math.exp(-self.r * self.T)
         
     def price_options(self):
-        
         self.compute_constants()
+
+        # Handling edge cases
+        if S <= 0 or K <= 0 or T < 0 or sigma < 0 or N < 1:
+        raise ValueError("Invalid input values.")
 
         # Initialize asset prices at maturity
         ST = [0] * (Binomial.N + 1)
