@@ -1,3 +1,9 @@
-1. Accepting a pandas dataframe, consisting of OHLCV data from the user to predict prices using Monte Carlo Simulation.
-2. Currently the Monte Carlo model is predicting data only for a single timestamp. Figure out how to plot the predicted   
-   price as a function of time.
+1. Accepting a pandas dataframe, consisting of OHLCV data from the user to predict prices using Monte Carlo 
+   Simulation. This eliminates the users efforts of providing a definite value for volatility.
+2. Currently the Monte Carlo model is predicting data only for a single timestamp. Figure out how to plot the 
+   predicted price as a function of time until maturity.
+   Results of all the simulations will be plot on the same graph, helping visualise the subtle trends based 
+   on the density of the plots.
+3. Building a comprehensive test suite for each model implemented on each option type, displaying the accuracy
+   of each model.
+4. A Jupyter Notebook detailing each use case.
