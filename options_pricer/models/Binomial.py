@@ -28,12 +28,12 @@ class Binomial:
 
     N = 100     #Number of time steps
 
-    def __init__(self, S, K, sigma, r, T, option_type='call'):
-        self.S = S  
+    def __init__(self, S, K, sigma, r, T, option_type='call', eps_1=0, eps_2=0, eps_3=0):
+        self.S = S+eps_1  
         self.K = K
-        self.sigma = sigma
+        self.sigma = sigma+eps_3
         self.r = r
-        self.T = T
+        self.T = T+eps_2
         """
         S: stock price
         K: strike price

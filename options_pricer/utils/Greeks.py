@@ -1,11 +1,12 @@
 from models.Monte_Carlo import MonteCarlo 
 from models.Black_Scholes import BlackScholes
+from models.Binomial import Binomial
 
 """
 The plan is to implement the greek functions on the objects of the models which would have parameters 
 passed into their constructors.
 """
-
+eps=0.01
 def delta(type, obj):
     match type:
         case 'MC':
@@ -21,7 +22,10 @@ def delta(type, obj):
             bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
             return bs.delta(option_type=obj.option_type)
         case 'BOPM':
-            pass
+            binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, eps)
+            binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, -eps)
+            delta = (binomial_1.price_options()["price"] - binomial_2.price_options()["price"]) / (2 * eps)
+            return delta
 
 def gamma(type, obj):
     match type:
@@ -38,7 +42,13 @@ def gamma(type, obj):
             bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
             return bs.gamma()
         case 'BOPM':
-            pass
+            binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, eps)
+            binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, -eps)
+            binomial_3=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0)
+            gamma = (binomial_1.price_options()["price"] -
+             2 * binomial_3.price_options()["price"] +
+             binomial_2.price_options()["price"]) / (eps ** 2)
+            return gamma
 
 def theta(type, obj):
     match type:
@@ -53,7 +63,10 @@ def theta(type, obj):
             bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
             return bs.theta(option_type=obj.option_type)
         case 'BOPM':
-            pass
+            binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, -eps)
+            binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, 0)
+            theta = (binomial_1.price_options()["price"] - binomial_2.price_options()["price"]) / eps
+            return theta
 
 def vega(type, obj):
     match type:
@@ -72,4 +85,7 @@ def vega(type, obj):
              bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
              return bs.vega()
         case 'BOPM':
-            pass
+            binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, 0, eps)
+            binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, 0, -eps)
+            vega = (binomial_1.price_options()["price"] - binomial_2.price_options()["price"]) / (2 * eps)
+            return vega
