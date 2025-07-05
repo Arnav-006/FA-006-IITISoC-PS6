@@ -1,3 +1,6 @@
+#This code requires certain changes to re-configure it with Monte_Carlo.py
+
+
 from models.Monte_Carlo import MonteCarlo 
 from models.Black_Scholes import BlackScholes
 from models.Binomial import Binomial
