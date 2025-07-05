@@ -25,10 +25,10 @@ import math
 """
 
 class Binomial:
-
-    N = 100     #Number of time steps
-
-    def __init__(self, S, K, sigma, r, T, option_type='call', eps_1=0, eps_2=0, eps_3=0):
+     #Number of time steps
+    N=100
+    
+    def __init__(self, S, K, T, sigma, r, option_type='call', eps_1=0, eps_2=0, eps_3=0):
         self.S = S+eps_1  
         self.K = K
         self.sigma = sigma+eps_3

@@ -4,23 +4,27 @@ from scipy.stats import norm
 
 
 class BlackScholes:
-    def __init__(self, S, K, sigma, r, T):
+    def __init__(self, S, K, sigma, r, T, option_type):
         self.S = S
         self.K = K
         self.sigma = sigma
         self.r = r
         self.T = T
+        self.option_type=option_type
         self._compute_d1_d2()
 
     def _compute_d1_d2(self):
         self.d1 = (np.log(self.S / self.K) + (self.r + 0.5 * self.sigma ** 2) * self.T) / (self.sigma * np.sqrt(self.T))
         self.d2 = self.d1 - self.sigma * np.sqrt(self.T)
 
-    def price(self, option_type):
-        if option_type == 'call':
+    def price_options(self):
+        if self.option_type == 'call':
             return self.S * norm.cdf(self.d1) - self.K * np.exp(-self.r * self.T) * norm.cdf(self.d2)
-        else:
+        elif self.option_type == 'put':
             return self.K * np.exp(-self.r * self.T) * norm.cdf(-self.d2) - self.S * norm.cdf(-self.d1)
+
+
+#Greeks
 
     def delta(self, option_type):
         return norm.cdf(self.d1) if option_type == 'call' else norm.cdf(self.d1) - 1

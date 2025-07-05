@@ -18,13 +18,12 @@ class MonteCarlo:
     In order to implement theta option Greek we need to accept a deviation parameter 'dev' for time to maturiy.
     """
 
-    def __init__(self, S, K, vol, r, T, option_type, dev_1=0, dev_2=0):
+    def __init__(self, S, K, vol, r, T, dev_1=0, dev_2=0):
         self.S = S  
         self.K = K
         self.vol = vol+dev_2
         self.r = r
         self.T = T+dev_1
-        self.option_type = option_type
         """
         S: stock price
         K: strike price
@@ -40,18 +39,26 @@ class MonteCarlo:
         self.volsdt = self.vol*np.sqrt(self.dt)
         self.lnS = np.log(self.S)
 
-    def calculate_option_price(self, lnSt, dev=0):
+    def calculate_option_price(self, lnSt, option_type, dev=0):
         # Compute Expectation and SE
         ST = np.exp(lnSt) + dev
 
-        if self.option_type == 'call':
+        if option_type == 'call':
             # For call option
-            CT = np.maximum(0, ST - self.K)
-            C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
-        elif self.option_type == 'put':
+            if self.S > self.K:
+                CT = np.maximum(0, ST - self.K)
+                C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
+            else:
+                CT = self.K - self.S
+                C0 = CT
+        elif option_type == 'put':
             # For put option
-            CT = np.maximum(0, self.K - ST)
-            C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
+            if self.K > self.S:
+                CT = np.maximum(0, self.K - ST)
+                C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
+            else:
+                CT = self.S - self.K
+                C0 = CT
 
         return C0, CT
 
@@ -66,9 +73,9 @@ class MonteCarlo:
 
         return lnSt
 
-    def simulate(self):
+    def simulate(self, option_type):
 
-        C0, CT = self.calculate_option_price(self.calculate_stock_price())
+        C0, CT = self.calculate_option_price(self.calculate_stock_price(), option_type)
 
         sigma = np.sqrt( np.sum( (CT[-1] - C0)**2) / (MonteCarlo.M-1) )
         SE = sigma/np.sqrt(MonteCarlo.M)
