@@ -10,17 +10,20 @@ The plan is to implement the greek functions on the objects of the models which 
 passed into their constructors.
 """
 eps=0.01
-def delta(type, obj):
+def delta(type, obj, dev=0):
     match type:
         case 'MC':
             """
             Functions to compute option price will be implemented on the object 'montecarlo' of class
             MonteCarlo
             """
-            montecarlo=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type)
+            montecarlo_0=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, 0+dev)
+            montecarlo_1=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, eps+dev)
 
             # Change of $1 assumed in the stock price
-            return montecarlo.calculate_option_price(montecarlo.calculate_stock_price(), 1)[0]-montecarlo.calculate_option_price(montecarlo.calculate_stock_price(), 0)[0]
+            return (montecarlo_1.calculate_option_price
+                    (montecarlo_1.calculate_stock_price(), eps)[0]-
+                    montecarlo_0.calculate_option_price(montecarlo_0.calculate_stock_price(), 0)[0])/eps
         case 'BS':
             bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
             return bs.delta(option_type=obj.option_type)
@@ -35,12 +38,12 @@ def gamma(type, obj):
         case 'MC':
             montecarlo=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type)
             delta_1= delta('MC', obj, 0)
-            delta_2= delta('MC', obj, 1)
+            delta_2= delta('MC', obj, eps)
             """
             Finding the difference between the deltas of two intervals of stock prices and then dividing it
             by the total interval
             """
-            return (delta_2 - delta_1) / 2
+            return (delta_2 - delta_1) / (2*eps)
         case 'BS':
             bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
             return bs.gamma()
@@ -56,7 +59,7 @@ def gamma(type, obj):
 def theta(type, obj):
     match type:
         case 'MC':
-            montecarlo_1=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, 1/MonteCarlo.N)
+            montecarlo_1=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, 0, 1/MonteCarlo.N)
             montecarlo_2=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type)
 
             # Difference in values calculated over a period of 1/N years
@@ -74,7 +77,7 @@ def theta(type, obj):
 def vega(type, obj):
     match type:
         case 'MC':
-            montecarlo_1=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, 0, 
+            montecarlo_1=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, 0, 0, 
                                     obj.vol*(obj.T/MonteCarlo.N))
             montecarlo_2=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type)
 

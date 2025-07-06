@@ -18,8 +18,8 @@ class MonteCarlo:
     In order to implement theta option Greek we need to accept a deviation parameter 'dev' for time to maturiy.
     """
 
-    def __init__(self, S, K, vol, r, T, option_type, dev_1=0, dev_2=0):
-        self.S = S  
+    def __init__(self, S, K, vol, r, T, option_type, dev_0=0, dev_1=0, dev_2=0):
+        self.S = S+dev_0
         self.K = K
         self.vol = vol+dev_2
         self.r = r
@@ -40,9 +40,9 @@ class MonteCarlo:
         self.volsdt = self.vol*np.sqrt(self.dt)
         self.lnS = np.log(self.S)
 
-    def calculate_option_price(self, lnSt, dev=0):
+    def calculate_option_price(self, lnSt):
         # Compute Expectation and SE
-        ST = np.exp(lnSt) + dev
+        ST = np.exp(lnSt) 
 
         if self.option_type == 'call':
             # For call option
