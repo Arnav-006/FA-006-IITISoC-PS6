@@ -1,9 +1,34 @@
-1. Accepting a pandas dataframe, consisting of OHLCV data from the user to predict prices using Monte Carlo 
-   Simulation. This eliminates the users efforts of providing a value for volatility.
-2. Currently the Monte Carlo model is predicting data only for a single timestamp. We plan to plot the 
-   predicted price as a function of time until maturity.
-   Results of all the simulations will be plot on the same graph, helping visualise the subtle trends based 
-   on the density of the plots.
-3. Building a comprehensive test suite for each model implemented on each option type, displaying the accuracy
-   of each model.
-4. A Jupyter Notebook detailing each use case and tutorial to use each feature.
+1. For Monte Carlo:
+
+   a. Accepting a pandas dataframe, consisting of OHLCV data from the user to predict prices using Monte Carlo 
+      Simulation. This eliminates the users efforts of providing a value for volatility.
+   b. A density plot will be created out of the plots from all simulations of Monte Carlo model. Price as a 
+      function of time plots of Black Scholes and Binomial models will be plot on this density plot. The entire 
+      time interval will be segregated into smaller time steps. Weights will be calculated for the results of 
+      each model based on the relative density of the region in which their plots are located. This will help
+      us get a more robust solution to pricing options. (As values having more possibility will be given greater
+      weightage while calculating the final average price.)
+   c. Add convergence and variance reduction methods to the existing models to get better sense of possible 
+      option prices. 
+   d. Time-plots for all the Greeks (to judge the sensitivity of option price to different input parameters).
+   e. Applying the model to 'basket options'
+   f. Functioning the model without the assumptions of constant volatility or interest rates
+   g. Additional risk metrics like 'VaR' or 'ES'
+   h. Implemting the model for American options
+
+
+2. For Black Scholes:
+
+
+3. For Binomial:
+
+
+4. General Additions:
+
+   a. Building a comprehensive test suite for each model implemented on each option type, displaying the accuracy
+      of each model.
+   b. A Jupyter Notebook detailing each use case and tutorial to use each feature.
+
+
+
+
