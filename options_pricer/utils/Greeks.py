@@ -1,9 +1,9 @@
 #This code requires certain changes to re-configure it with Monte_Carlo.py
 
 
-from models.Monte_Carlo import MonteCarlo 
-from models.Black_Scholes import BlackScholes
-from models.Binomial import Binomial
+from options_pricer.models.Monte_Carlo import MonteCarlo 
+from options_pricer.models.Black_Scholes import BlackScholes
+from options_pricer.models.Binomial import Binomial
 
 """
 The plan is to implement the greek functions on the objects of the models which would have parameters 
@@ -21,8 +21,7 @@ def delta(type, obj, dev=0):
             montecarlo_1=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, eps+dev)
 
             # Change of $1 assumed in the stock price
-            return (montecarlo_1.calculate_option_price
-                    (montecarlo_1.calculate_stock_price(), eps)[0]-
+            return (montecarlo_1.calculate_option_price(montecarlo_1.calculate_stock_price(), eps)[0]-
                     montecarlo_0.calculate_option_price(montecarlo_0.calculate_stock_price(), 0)[0])/eps
         case 'BS':
             bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
@@ -51,9 +50,7 @@ def gamma(type, obj):
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, eps)
             binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, -eps)
             binomial_3=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0)
-            gamma = (binomial_1.price_options()["price"] -
-             2 * binomial_3.price_options()["price"] +
-             binomial_2.price_options()["price"]) / (eps ** 2)
+            gamma = (binomial_1.price_options()["price"] - 2*binomial_3.price_options()["price"] + binomial_2.price_options()["price"]) / (eps ** 2)
             return gamma
 
 def theta(type, obj):
