@@ -53,8 +53,8 @@ class Binomial:
         self.compute_constants()
 
         # Handling edge cases
-        if S <= 0 or K <= 0 or T < 0 or sigma < 0 or N < 1:
-        raise ValueError("Invalid input values.")
+        if self.S <= 0 or self.K <= 0 or self.T < 0 or self.sigma < 0 or Binomial.N < 1:
+            raise ValueError("Invalid input values.")
 
         # Initialize asset prices at maturity
         ST = [0] * (Binomial.N + 1)
