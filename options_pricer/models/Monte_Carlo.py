@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 from pandas_datareader import data as pdr
 
 class MonteCarlo:
-    N=1000
-    M=15
+    N=100
+    M=100
     """
         N: number of time steps
         M: number of simulations
