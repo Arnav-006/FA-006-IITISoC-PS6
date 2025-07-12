@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from options_pricer_European.models.Monte_Carlo import MonteCarlo 
 import numpy as np
 from scipy import stats
-from Greeks import delta, gamma, vega, theta
+from options_pricer_European.utils.Greeks import delta, gamma, vega, theta
 
 class MC_Visualiser:
     def __init__(self, obj):        
@@ -121,7 +121,7 @@ class MC_Visualiser:
         plt.show()
 
     def option_price_graph(self):
-        payoffs=max(0,(np.exp(self.mc.calculate_stock_price())-self.mc.K))   #Payoff matrix
+        payoffs=np.maximum(0,(np.exp(self.mc.calculate_stock_price())-self.mc.K))   #Payoff matrix
         option_prices=[np.exp(-self.mc.r*(MonteCarlo.N - i)*self.mc.T/MonteCarlo.N)*payoffs[i,:] 
                        for i in range(MonteCarlo.N+1)]      #option price matrix obtained from simulations
         plt.plot(option_prices)
@@ -136,8 +136,8 @@ The following snippet is temporary and won't be there when the package is publis
 
 mc=MonteCarlo(101.15, 98.01, 0.0991, 0.01, 0.1644, 'call', 0, 0)
 mc_v=MC_Visualiser(mc)
-# mc_v.stock_graph()      #Variation of stock price with time until maturity
-# mc_v.option_price_graph()   #Variation of premium with time until maturity
+mc_v.stock_graph()      #Variation of stock price with time until maturity
+mc_v.option_price_graph()   #Variation of premium with time until maturity
 # mc_v.probability_distribution(3.86)     #Accuracy of the model
 # mc_v.histogram()        #Distribution of the results of the Monte Carlo simulation
-mc_v.visualise_greeks('delta')
+# mc_v.visualise_greeks('delta')
