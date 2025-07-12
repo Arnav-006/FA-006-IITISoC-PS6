@@ -1,4 +1,4 @@
-from models.Black_Scholes import BlackScholes 
+from ..models.Black_Scholes import BlackScholes 
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
