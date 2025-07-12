@@ -16,6 +16,7 @@
    g. Additional risk metrics like 'VaR' or 'ES'
    h. Implemeting the model for American options
    i. In all the plots, date (and time) should be displayed on the x axis instead of time steps.
+   j. Improvise the histogram by adding mean and percentile.
 
 
 2. For Black Scholes:
