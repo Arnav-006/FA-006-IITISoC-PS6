@@ -1,7 +1,7 @@
 #Visualisation tools for Greeks are not functioning.
 
 import matplotlib.pyplot as plt
-from options_pricer.models.Monte_Carlo import MonteCarlo 
+from options_pricer_European.models.Monte_Carlo import MonteCarlo 
 import numpy as np
 from scipy import stats
 from Greeks import delta, gamma, vega, theta
