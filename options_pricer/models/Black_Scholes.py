@@ -39,5 +39,26 @@ class BlackScholes:
     def rho(self, option_type):
         rho_val = self.K * self.T * np.exp(-self.r * self.T)
         return rho_val * norm.cdf(self.d2) / 100 if option_type == 'call' else -rho_val * norm.cdf(-self.d2) / 100
+    
+
+    #Classic Option Strategies
+
+    #Bull Spreads - strategies that limit the upward and downward return but
+    """Bull Call Spread - buy a call at a strike price K, and sell at a higher strike price K2
+                        - ideal if we are moderately bullish, expecting underlying price to rise till the higher strike and not skyrocket above it
+                        - selling a put for a higher strike K2 also reduces the upfront cost as buying only a call for a low strike can be pretty expensive
+    """
+    def Bull_Call_Spread(self, K2):
+        if(K2 <= self.K):
+            print("Invalid input (K < K1 does not hold)")
+        else:
+            call_buy = np.maximum(self.K - self.S, 0.0)
+            call_sell = np.maximum(K2 - self.S,0.0)
+            payoff = call_buy - call_sell
+            buy_prem = self.price('call')
+            sell_prem = BlackScholes(self.S,K2,self.sigma,self.r,self.T).price('call')
+            PL = payoff - buy_prem + sell_prem
+        return payoff,PL
+
 
 
