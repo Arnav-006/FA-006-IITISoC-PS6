@@ -1,10 +1,15 @@
+"""
+The code given below has errors in the Control Variates (no error with delta_calc() or delta function in BlackScholes class) - the
+obtained standard error is exceptionally high.
+"""
+
 import math
 import numpy as np
 import pandas as pd
 import datetime
 import scipy.stats as stats
 import matplotlib.pyplot as plt
-from pandas_datareader import data as pdr
+# from pandas_datareader import data as pdr
 from Black_Scholes import BlackScholes
 
 class MonteCarlo:
@@ -48,17 +53,17 @@ class MonteCarlo:
     Calculating delta:
     """
 
-    # def delta_calc(r, S, K, T, sigma, type="c"):
-    #     "Calculate delta of an option"
-    #     d1 = (np.log(S/K) + (r + sigma**2/2)*T)/(sigma*np.sqrt(T))
-    #     try:
-    #         if type == "c":
-    #             delta_calc = stats.norm.cdf(d1, 0, 1)
-    #         elif type == "p":
-    #             delta_calc = -stats.norm.cdf(-d1, 0, 1)
-    #         return delta_calc
-    #     except:
-    #         print("Please confirm option type, either 'c' for Call or 'p' for Put!")
+    def delta_calc(self):
+        "Calculate delta of an option"
+        d1 = (np.log(self.S/self.K) + (self.r + self.vol**2/2)*self.T)/(self.vol*np.sqrt(self.T))
+        try:
+            if self.option_type == "call":
+                delta_calc = stats.norm.cdf(d1, 0, 1)
+            elif self.option_type == "put":
+                delta_calc = -stats.norm.cdf(-d1, 0, 1)
+            return delta_calc
+        except:
+            print("Please confirm option type, either 'call' for Call or 'put' for Put!")
 
     """
     Further build-up on the control variates method to reduce variance:
@@ -67,10 +72,10 @@ class MonteCarlo:
     def calculate_option_price(self, ST, cv):
         if self.option_type == 'call':
             #For call option
-            CT = np.maximum(0, ST[-1] - self.K) #+ self.beta1*cv[-1]
+            CT = np.maximum(0, ST[-1] - self.K) + self.beta1*cv[-1]
         elif self.option_type == 'put':
             #For put option
-            CT = np.maximum(0, self.K - ST[-1]) #+ self.beta1*cv[-1]
+            CT = np.maximum(0, self.K - ST[-1]) + self.beta1*cv[-1]
 
         C0 = np.exp(-self.r*self.T)*np.sum(CT)/MonteCarlo.M
 
@@ -108,8 +113,9 @@ class MonteCarlo:
         delta_St=self.nudt + self.volsdt*Z
         ST = self.S*np.cumprod( np.exp(delta_St), axis=0)
         ST = np.concatenate( (np.full(shape=(1, MonteCarlo.M), fill_value=self.S), ST ) )
-        bs=BlackScholes(ST[:-1].T, self.K, self.vol, self.r, np.linspace(self.T,0,MonteCarlo.N))
-        deltaSt = bs.delta('call').T
+        # bs=BlackScholes(ST[:-1].T, self.K, self.vol, self.r, np.linspace(self.T,0,MonteCarlo.N))
+        # deltaSt = bs.delta('call').T
+        deltaSt = self.delta_calc()
         cv = np.cumsum(deltaSt*(ST[1:] - ST[:-1]*self.erdt), axis=0)
 
         return ST, cv
