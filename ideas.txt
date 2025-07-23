@@ -1,7 +1,7 @@
 1. For Monte Carlo:
 
    a. Accepting a pandas dataframe, consisting of OHLCV data from the user to predict prices using Monte Carlo 
-      Simulation. This eliminates the users efforts of providing a value for volatility.
+      Simulation. This eliminates the users efforts of providing a value for volatility.✔️
    b. A density plot will be created out of the plots from all simulations of Monte Carlo model. Price as a 
       function of time plots of Black Scholes and Binomial models will be plot on this density plot. The entire 
       time interval will be segregated into smaller time steps. Weights will be calculated for the results of 
@@ -9,12 +9,12 @@
       us get a more robust solution to pricing options. (As values having more possibility will be given greater
       weightage while calculating the final average price.)
    c. Add convergence and variance reduction methods to the existing models to get better sense of possible 
-      option prices. 
-   d. Time-plots for all the Greeks (to judge the sensitivity of option price to different input parameters).
+      option prices. ✔️
+   d. Time-plots for all the Greeks (to judge the sensitivity of option price to different input parameters). ✔️
    e. Applying the model to 'basket options'
-   f. Functioning the model without the assumptions of constant volatility or interest rates
+   f. Functioning the model without the assumptions of constant volatility ✔️ or interest rates 
    g. Additional risk metrics like 'VaR' or 'ES'
-   h. Implemeting the model for American options
+   h. Implemeting the model for American options ✔️
    i. In all the plots, date (and time) should be displayed on the x axis instead of time steps.
    j. Improvise the histogram by adding mean and percentile.
 
@@ -30,6 +30,10 @@
    a. Building a comprehensive test suite for each model implemented on each option type, displaying the accuracy
       of each model.
    b. A Jupyter Notebook detailing each use case and tutorial to use each feature.
+   c. Accuracy of each model will be checked by counting the number of test cases where the value predicted by the model is within
+      a pre-defined percentage range of the actual value.
+      e.g. If the actual option value is 10 and a percentage margin of 5% is considered, the prediction by the model will be 
+      considered successfull if it is withing 5-5*0.05 < x < 5+5*0.05
 
 
 
