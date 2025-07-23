@@ -14,9 +14,10 @@
    e. Applying the model to 'basket options'
    f. Functioning the model without the assumptions of constant volatility ✔️ or interest rates 
    g. Additional risk metrics like 'VaR' or 'ES'
-   h. Implemeting the model for American options ✔️
+   h. Implemeting the models for American options ✔️
    i. In all the plots, date (and time) should be displayed on the x axis instead of time steps.
    j. Improvise the histogram by adding mean and percentile.
+   k. Implemeting the models for exotic options.
 
 
 2. For Black Scholes:
