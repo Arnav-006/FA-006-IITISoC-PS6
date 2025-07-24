@@ -66,7 +66,7 @@ class BlackScholes:
                        - also investment in buying a call at lower strike is much less expensive than higher strike, hence premium gained on selling put
                        at higher price is not affected majorly
     """
-    def Bull_Pul_Spread(self, K2):
+    def Bull_Pull_Spread(self, K2):
         if(K2 <= self.K):
             print("Invalid input (K < K1 does not hold)")
         else:
@@ -80,11 +80,11 @@ class BlackScholes:
 
 
     #Bear Spreads
-    """Bull Call Spread - buy a call at a strike price K, and sell a put at a higher strike price K2
+    """Bear Call Spread - buy a call at a strike price K, and sell a put at a higher strike price K2
                         - ideal if we are moderately bullish, expecting underlying price to rise till the higher strike and not skyrocket above it
                         - selling a put for a higher strike K2 also reduces the upfront cost as buying only a call for a low strike can be pretty expensive
     """
-    def Bull_Call_Spread(self, K2):
+    def Bear_Call_Spread(self, K2):
         if(K2 <= self.K):
             print("Invalid input (K < K1 does not hold)")
         else:
@@ -97,12 +97,12 @@ class BlackScholes:
             return payoff,PL
     
 
-    """Bull Put Spread - buy a put at a strike price K, and sell a put at a higher strike price K2
+    """Bear Put Spread - buy a put at a strike price K, and sell a put at a higher strike price K2
                        - useful if we want to limit our loss by selling a put at strike K2
                        - also investment in buying a call at lower strike is much less expensive than higher strike, hence premium gained on selling put
                        at higher price is not affected majorly
     """
-    def Bull_Pul_Spread(self, K2):
+    def Bear_Pull_Spread(self, K2):
         if(K2 <= self.K):
             print("Invalid input (K < K1 does not hold)")
         else:
@@ -127,7 +127,7 @@ class BlackScholes:
     
     """Strangle - 
     """
-    def strangle(self,K2):
+    def Strangle(self,K2):
         if(K2 <= self.K):
             print("Invalid input (K < K1 does not hold)")
         else:
