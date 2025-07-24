@@ -137,7 +137,7 @@ class BlackScholes:
             put_price = BlackScholes(self.S,K2,self.sigma,self.r,self.T).price('put')
             call_price = self.price('call')
             PL = payoff - call_price - put_price
-            return payoff,Pl
+            return payoff,PL
     
 
     """Collar -
