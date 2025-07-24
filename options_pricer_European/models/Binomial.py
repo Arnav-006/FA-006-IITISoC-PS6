@@ -34,6 +34,7 @@ class Binomial:
         self.sigma = sigma+eps_3
         self.r = r
         self.T = T+eps_2
+        self.option_type = option_type
         """
         S: stock price
         K: strike price
@@ -43,10 +44,10 @@ class Binomial:
         """
 
     def compute_constants(self):
-        dt = self.T / Binomial.N
-        self.u = math.exp(self.sigma * math.sqrt(dt))
+        self.dt = self.T / Binomial.N
+        self.u = math.exp(self.sigma * math.sqrt(self.dt))
         self.d = 1 / self.u
-        self.p = (math.exp(self.r * dt) - self.d) / (self.u - self.d)
+        self.p = (math.exp(self.r * self.dt) - self.d) / (self.u - self.d)
         self.discount = math.exp(-self.r * self.T)
         
     def price_options(self):
