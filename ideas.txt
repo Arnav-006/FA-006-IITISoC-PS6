@@ -18,6 +18,7 @@
    i. In all the plots, date (and time) should be displayed on the x axis instead of time steps.
    j. Improvise the histogram by adding mean and percentile.
    k. Implemeting the models for exotic options.
+   l. Incorporate the functions in MonteCarlo.py in the Heston-Model branch in MonteCarlo.py present in the options_pricer package.
 
 
 2. For Black Scholes:
@@ -35,6 +36,7 @@
       a pre-defined percentage range of the actual value.
       e.g. If the actual option value is 10 and a percentage margin of 5% is considered, the prediction by the model will be 
       considered successfull if it is withing 5-5*0.05 < x < 5+5*0.05
+
 
 
 
