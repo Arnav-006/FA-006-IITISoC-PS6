@@ -30,11 +30,13 @@ def Imp_Vol(S0,K,r,T,market_price,type='call',tol=0.00001):
         vol_new = vol_init - (bs_price - market_price)/Vprime
 
         new_bs_price = BlackScholes(S0,K,vol_new,r,T).price(type)
-        if(abs(vol_new-vol_init) or abs(bs_price - new_bs_price)<tol):
+        if(abs(bs_price - new_bs_price)<tol):
             break
 
         vol_init = vol_new
 
+        print(f"After iteration {i+1}: vol_init = {vol_init:.6f}\tBS Price = {new_bs_price:.6f}\tactual option price = {market_price}")
+
     return max(0,vol_new)
 
-print(f"{Imp_Vol(60,57,0.045,30/365,0.70,'call'):.3f}")
+print(f"{Imp_Vol(60,70,0.045,30/365,5.0,'put'):.3f}")
