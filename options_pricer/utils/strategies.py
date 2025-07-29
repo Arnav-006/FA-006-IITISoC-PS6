@@ -6,7 +6,7 @@ from ..models.Monte_Carlo import MonteCarlo
 from ..models.Binomial import Binomial
 
 #Classic Option Strategies
-#Functions that return PnL graphs based on option premium prices calculated using model chosen by user - BS, BIN
+#Functions that return PnL graphs based on option premium prices calculated using model chosen by user - BS, BIN, MC
 
 #Bull Spreads
 """Bull Call Spread - buy a call at a strike price K, and sell a put at a higher strike price K2
