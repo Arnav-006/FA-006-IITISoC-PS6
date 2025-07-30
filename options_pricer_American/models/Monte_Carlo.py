@@ -125,3 +125,9 @@ class MonteCarloAmerican():
             # For put option 
             self.backtrack()  # Backtracking to find the optimal exercise strategy
             self.plot_data()  # Plotting the results
+
+
+
+
+MCAme = MonteCarloAmerican(S=98.01, K=101.15, vol=0.2, r=0.05, T=1, option_type='put')
+MCAme.simulate()  # Simulating the American option pricing
