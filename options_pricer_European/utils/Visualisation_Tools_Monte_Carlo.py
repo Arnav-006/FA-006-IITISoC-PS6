@@ -13,6 +13,7 @@ class MC_Visualiser:
     def visualise_greeks(self,type):
         stock_data= (np.exp(self.mc.calculate_stock_price()[0]) + np.exp(self.mc.calculate_stock_price()[1]))*0.5
         payoffs=np.maximum(0,(stock_data-self.mc.K))   #Payoff matrix
+
         option_prices=[np.exp(-self.mc.r*(MonteCarlo.N - i)*self.mc.T/MonteCarlo.N)*payoffs[i,:] 
                        for i in range(MonteCarlo.N+1)][-1]  #Option price matrix obtained from simulations
         k=0

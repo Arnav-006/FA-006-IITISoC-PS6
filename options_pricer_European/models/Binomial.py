@@ -1,3 +1,5 @@
+
+import numpy as np
 import math
 
 """
@@ -34,6 +36,7 @@ class Binomial:
         self.sigma = sigma+eps_3
         self.r = r
         self.T = T+eps_2
+        self.option_type = option_type
         """
         S: stock price
         K: strike price
@@ -42,11 +45,11 @@ class Binomial:
         T: time to maturity in years
         """
 
-    def compute_constants(self):
-        dt = self.T / Binomial.N
-        self.u = math.exp(self.sigma * math.sqrt(dt))
+    def compute_constants(self)
+        self.dt = self.T / Binomial.N
+        self.u = math.exp(self.sigma * math.sqrt(self.dt))
         self.d = 1 / self.u
-        self.p = (math.exp(self.r * dt) - self.d) / (self.u - self.d)
+        self.p = (math.exp(self.r * self.dt) - self.d) / (self.u - self.d)
         self.discount = math.exp(-self.r * self.T)
         
     def price_options(self):
@@ -55,23 +58,20 @@ class Binomial:
         # Handling edge cases
         if self.S <= 0 or self.K <= 0 or self.T < 0 or self.sigma < 0 or Binomial.N < 1:
             raise ValueError("Invalid input values.")
+        # Vector of indices 0 to N
+        i = np.arange(Binomial.N + 1)
 
-        # Initialize asset prices at maturity
-        ST = [0] * (Binomial.N + 1)
-        for i in range(Binomial.N + 1):
-            ST[i] = self.S * (self.u ** (Binomial.N - i)) * (self.d ** i)
+        # Calculate asset prices at maturity
+        ST = self.S * (self.u ** (Binomial.N - i)) * (self.d ** i)
 
-        # Initialize option values at maturity
-        option_values = [0] * (Binomial.N + 1)
-        for i in range(Binomial.N + 1):
-            if self.option_type == 'call':
-                option_values[i] = max(0, ST[i] - self.K)
-            else:
-                option_values[i] = max(0, self.K - ST[i])
+        # Option values at maturity
+        if self.option_type == 'call':
+            option_values = np.maximum(0, ST - self.K)
+        else:
+            option_values = np.maximum(0, self.K - ST)
 
-        # Step back through the tree
+        # Step backward through the tree
         for j in range(Binomial.N - 1, -1, -1):
-            for i in range(j + 1):
-                option_values[i] = math.exp(-self.r * self.dt) * (self.p * option_values[i] + (1 - self.p) * option_values[i + 1])
-
+            option_values = np.exp(-self.r * self.dt) * (self.p * option_values[:-1] + (1 - self.p) * option_values[1:])
+            
         return option_values[0]
