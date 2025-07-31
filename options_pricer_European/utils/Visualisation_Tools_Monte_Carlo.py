@@ -4,14 +4,16 @@ import matplotlib.pyplot as plt
 from options_pricer_European.models.Monte_Carlo import MonteCarlo 
 import numpy as np
 from scipy import stats
-from Greeks import delta, gamma, vega, theta
+from options_pricer_European.utils.Greeks import delta, gamma, vega, theta
+
 
 class MC_Visualiser:
     def __init__(self, obj):        
         self.mc=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type)
 
     def visualise_greeks(self,type):
-        payoffs=np.maximum(0,(np.exp(self.mc.calculate_stock_price())-self.mc.K))   #Payoff matrix
+        stock_data= (np.exp(self.mc.calculate_stock_price()[0]) + np.exp(self.mc.calculate_stock_price()[1]))*0.5
+        payoffs=np.maximum(0,(stock_data-self.mc.K))   #Payoff matrix
         option_prices=[np.exp(-self.mc.r*(MonteCarlo.N - i)*self.mc.T/MonteCarlo.N)*payoffs[i,:] 
                        for i in range(MonteCarlo.N+1)][-1]  #Option price matrix obtained from simulations
         k=0
@@ -113,7 +115,7 @@ class MC_Visualiser:
         plt.show()
 
     def stock_graph(self):
-        stock_data= np.exp(self.mc.calculate_stock_price())     #Predicted stock price matrix
+        stock_data= (np.exp(self.mc.calculate_stock_price()[0]) + np.exp(self.mc.calculate_stock_price()[1]))*0.5     #Predicted stock price matrix
         plt.plot(stock_data)
         plt.ylabel('Stock Price')
         plt.xlabel('Time Steps')
@@ -121,7 +123,8 @@ class MC_Visualiser:
         plt.show()
 
     def option_price_graph(self):
-        payoffs=max(0,(np.exp(self.mc.calculate_stock_price())-self.mc.K))   #Payoff matrix
+        stock_data= (np.exp(self.mc.calculate_stock_price()[0]) + np.exp(self.mc.calculate_stock_price()[1]))*0.5
+        payoffs=np.maximum(0,(stock_data-self.mc.K))   #Payoff matrix
         option_prices=[np.exp(-self.mc.r*(MonteCarlo.N - i)*self.mc.T/MonteCarlo.N)*payoffs[i,:] 
                        for i in range(MonteCarlo.N+1)]      #option price matrix obtained from simulations
         plt.plot(option_prices)
@@ -140,4 +143,5 @@ mc_v=MC_Visualiser(mc)
 # mc_v.option_price_graph()   #Variation of premium with time until maturity
 # mc_v.probability_distribution(3.86)     #Accuracy of the model
 # mc_v.histogram()        #Distribution of the results of the Monte Carlo simulation
-mc_v.visualise_greeks('delta')
+# mc_v.visualise_greeks('delta')
+
