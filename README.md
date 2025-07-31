@@ -165,3 +165,64 @@ myModel = BlackScholes(S, K, sigma, r, T)
     - Args: 
         - option_type : *str* - the type of option contract, allowed values are ```"call"``` and ```"put"```.
     - Returns : *float* - The value of rho calculated using Black-Scholes model.
+
+### 2. Binomial Model
+
+A simple and intuitive model which can be used for pricing both American and European options, based on breaking down the time until an option's expiration into a series of smaller, distinct time steps.
+
+By asssuming that the stock price can go either up or down at each step, the underlying asset price is modeled as a "binomial tree". The value of the option is then calculated by working backward from the end of the tree. At the final step, the option's value is simply its intrinsic value (its payoff). Then, by discounting these payoffs and their probabilities at each preceding node, the model works its way back to the present to determine the option's fair value today.
+
+#### *class* Binomial
+
+- Class to implement the Binomial option pricing model, with methods to compute model constants and price.
+
+- *module* : **option_pricer.models.Binomial**
+
+#### Usage
+
+```python
+#create binModel object of class Binomial
+binModel = Binomial(S = 200, K = 203, sigma = 0.35, r = 0.03, T = 0.5, option_type = 'put', eps_1 = 0,eps_2 = 0, eps_3 = 0)
+```
+
+#### Parameters
+
+- S : *float*
+    - Current price of underlying asset.
+- K : *float*
+    - Strike price for option contract.
+- sigma : *float*
+    - Volatility for underlying (as a decimal).
+- r : *float*
+    - Risk-free interest rate (annualized, as a decimal).
+- T : *float*
+    - Time upto expiration for option contract.
+- option_type : *str, optional*
+    - Type of option, accepts one of two values : ```call``` or ```put```.
+- eps_1 : *float, optional*
+    - tolerance in ```S```, such that instance variable for underlying price stores ```S+eps_1```. Defaults to 0.
+- eps_2 : *float, optional*
+    - tolerance in ```sigma```, such that instance variable for volatility stores ```sigma+eps_1```. Defaults to 0.
+- eps_3 : *float, optional*
+    - tolerance in ```T```, such that instance variable for expiration time stores ```T+eps_1```. Defaults to 0.
+
+#### Returns
+- object of class Binomial
+
+#### Methods
+
+- #### compute_constants()
+    - Defines instance variables: ```dt```,,,,```discount``` based on 
+        - ```dt``` : duration of one time step
+        - ```u``` : factor for upward movement at each step
+        - ```d``` : factor for downward movement at each step
+        - ```p``` : defined as $p = \frac{e^{r \cdot dt} - d} {u - d}$
+        - ```discount``` : total payoff discount defined as $discount = e^{r \cdot T}$
+    - Parameters : ```None```
+    - Returns : ```None```
+
+- #### price_options()
+    - Calculates the option price using the binomial pricing model.
+    - Parameters : ```None```
+    - Returns 
+        - The option price calculated.
