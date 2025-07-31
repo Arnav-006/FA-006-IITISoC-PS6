@@ -9,7 +9,7 @@ from ..models.Binomial import Binomial
 #Functions that return PnL graphs based on option premium prices calculated using model chosen by user - BS, BIN, MC
 
 #Bull Spreads
-"""Bull Call Spread - buy a call at a strike price K, and sell a put at a higher strike price K2
+"""Bull Call Spread - buy a call at a strike price K1, and sell a put at a higher strike price K2
                     - ideal if we are moderately bullish, expecting underlying price to rise till the higher strike and not skyrocket above it
                     - selling a put for a higher strike K2 also reduces the upfront cost as buying only a call for a low strike can be pretty expensive
 """
@@ -57,7 +57,7 @@ def Bull_Call_Spread(S, K1, K2, r, sigma, T, model = "BS", S_max=None, num_point
     plt.show()
 
 
-"""Bull Put Spread - buy a put at a strike price K, and sell a put at a higher strike price K2
+"""Bull Put Spread - buy a put at a strike price K1, and sell a put at a higher strike price K2
                     - useful if we want to limit our loss by selling a put at strike K2
                     - also investment in buying a call at lower strike is much less expensive than higher strike, hence premium gained on selling put
                     at higher price is not affected majorly
@@ -106,7 +106,7 @@ def Bull_Put_Spread(S, K1, K2, r, sigma, T, model = "BS", S_max=None, num_points
     plt.show()
 
 #Bear Spreads
-"""Bear Call Spread - buy a call at a strike price K, and sell a put at a higher strike price K2
+"""Bear Call Spread - buy a call at a strike price K1, and sell a put at a higher strike price K2
                     - ideal if we are moderately bullish, expecting underlying price to rise till the higher strike and not skyrocket above it
                     - selling a put for a higher strike K2 also reduces the upfront cost as buying only a call for a low strike can be pretty expensive
 """
@@ -154,7 +154,7 @@ def Bear_Call_Spread(S, K1, K2, r, sigma, T, model = "BS", S_max=None, num_point
     plt.show()
 
 
-"""Bear Put Spread - buy a put at a strike price K, and sell a put at a higher strike price K2
+"""Bear Put Spread - buy a put at a strike price K1, and sell a put at a higher strike price K2
                     - useful if we want to limit our loss by selling a put at strike K2
                     - also investment in buying a put at lower strike is much less expensive than higher strike, hence premium gained on selling put
                     at higher price is not affected majorly
