@@ -46,7 +46,7 @@ class Binomial:
         T: time to maturity in years
         """
         
-    def compute_constants(self)
+    def compute_constants(self):
         self.dt = self.T / Binomial.N
         self.u = math.exp(self.sigma * math.sqrt(self.dt))
         self.d = 1 / self.u
