@@ -1,3 +1,4 @@
+
 import numpy as np
 import math
 
@@ -44,7 +45,7 @@ class Binomial:
         T: time to maturity in years
         """
 
-    def compute_constants(self):
+    def compute_constants(self)
         self.dt = self.T / Binomial.N
         self.u = math.exp(self.sigma * math.sqrt(self.dt))
         self.d = 1 / self.u
@@ -57,8 +58,6 @@ class Binomial:
         # Handling edge cases
         if self.S <= 0 or self.K <= 0 or self.T < 0 or self.sigma < 0 or Binomial.N < 1:
             raise ValueError("Invalid input values.")
-
-        # Initialize asset prices at maturity
         # Vector of indices 0 to N
         i = np.arange(Binomial.N + 1)
 
@@ -74,5 +73,5 @@ class Binomial:
         # Step backward through the tree
         for j in range(Binomial.N - 1, -1, -1):
             option_values = np.exp(-self.r * self.dt) * (self.p * option_values[:-1] + (1 - self.p) * option_values[1:])
-
+            
         return option_values[0]
