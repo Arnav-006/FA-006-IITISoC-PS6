@@ -285,3 +285,48 @@ Strangle(S=50, K1=45, K2=55, sigma=0.25, r=0.03, T=0.5, model="BIN", num_points=
 ---
 
 ### Collar
+
+Compute and visualize the profit and loss (P&L) of a collar options strategy using different pricing models.
+
+The `Collar` function calculates the payoff and P&L of a collar strategy. A collar involves **holding shares of an underlying stock, buying an out-of-the-money (OTM) put option (to protect against downside risk), and selling an out-of-the-money (OTM) call option (to generate income and partially offset the cost of the put)**. This strategy is typically used by investors who hold a long position in a stock and want to protect against a significant price drop while being willing to cap their upside potential. The function supports three pricing models: Black-Scholes (`BS`), Binomial (`BIN`), and Monte Carlo (`MC`). It also generates a plot of the P&L across a range of stock prices.
+
+#### Usage
+
+```python
+Collar(S, K1, K2, sigma, r, T, model="BS", num_points=100)
+```
+
+#### Parameters
+
+- S : *float* 
+    - Current stock price.
+- K1 : *float* 
+    - Strike price for buying call option.
+- K2 : *float*
+    - Strike price for buying put option.
+- r : *float* 
+    - Risk-free interest rate (annualized, as a decimal).
+- sigma : *float*
+    - Implied volatility of underlying (annualized, as a decimal).
+- T : *float*
+    - Time to expiration of the option, in years.
+- model : *str, optional*
+    - Pricing model to use. Options are:
+        - ```"BS"```: Black-Scholes model
+        - ```"BIN"```: Binomial model
+        - ```"BS"```: Monte Carlo simulation
+- S_max : *float, optional*
+    - Maximum underlying price to show on x-axis in P&L plot. If ```None``` defaults to ```1.5 * K2```.
+-num_points : *int, optional*
+    - Number of stock price points to plot P&L. If ```None``` defaults to 100.
+
+#### Examples
+
+```python
+# Example using Black-Scholes model
+Collar(S=100, K1=95, K2=105, sigma=0.2, r=0.05, T=1.0, model="BS")
+
+# Example using Binomial model with different parameters
+Collar(S=50, K1=45, K2=55, sigma=0.25, r=0.03, T=0.5, model="BIN", num_points=200)
+```
+---
