@@ -37,8 +37,13 @@ Bull_Call_Spread(S, K1, K2, r, sigma, T, model="BS", S_max=None, num_points=100)
         - ```"BS"```: Monte Carlo simulation
 - S_max : *float, optional*
     - Maximum underlying price to show on x-axis in P&L plot. If ```None``` defaults to ```1.5 * K2```.
--num_points : *int, optional*
+- num_points : *int, optional*
     - Number of stock price points to plot P&L. If ```None``` defaults to 100.
+
+#### Returns
+
+- None
+    - The function does not return a value but generates a plot of the P&L and prints an error message if ```K2 <= K1```.
 
 #### Examples
 
@@ -84,8 +89,13 @@ Bull_Put_Spread(S, K1, K2, r, sigma, T, model="BS", S_max=None, num_points=100)
         - ```"BS"```: Monte Carlo simulation
 - S_max : *float, optional*
     - Maximum underlying price to show on x-axis in P&L plot. If ```None``` defaults to ```1.5 * K2```.
--num_points : *int, optional*
+- num_points : *int, optional*
     - Number of stock price points to plot P&L. If ```None``` defaults to 100.
+
+#### Returns
+
+- None
+    - The function does not return a value but generates a plot of the P&L and prints an error message if ```K2 <= K1```.
 
 #### Examples
 
@@ -131,8 +141,13 @@ Bear_Call_Spread(S, K1, K2, r, sigma, T, model="BS", S_max=None, num_points=100)
         - ```"BS"```: Monte Carlo simulation
 - S_max : *float, optional*
     - Maximum underlying price to show on x-axis in P&L plot. If ```None``` defaults to ```1.5 * K2```.
--num_points : *int, optional*
+- num_points : *int, optional*
     - Number of stock price points to plot P&L. If ```None``` defaults to 100.
+
+#### Returns
+
+- None
+    - The function does not return a value but generates a plot of the P&L and prints an error message if ```K2 <= K1```.
 
 #### Examples
 
@@ -178,8 +193,13 @@ Bear_Put_Spread(S, K1, K2, r, sigma, T, model="BS", S_max=None, num_points=100)
         - ```"BS"```: Monte Carlo simulation
 - S_max : *float, optional*
     - Maximum underlying price to show on x-axis in P&L plot. If ```None``` defaults to ```1.5 * K2```.
--num_points : *int, optional*
+- num_points : *int, optional*
     - Number of stock price points to plot P&L. If ```None``` defaults to 100.
+
+#### Returns
+
+- None
+    - The function does not return a value but generates a plot of the P&L and prints an error message if ```K2 <= K1```.
 
 #### Examples
 
@@ -223,8 +243,13 @@ Straddle(S, K, sigma, r, T, model="BS", num_points=100)
         - ```"BS"```: Monte Carlo simulation
 - S_max : *float, optional*
     - Maximum underlying price to show on x-axis in P&L plot. If ```None``` defaults to ```1.5 * K2```.
--num_points : *int, optional*
+- num_points : *int, optional*
     - Number of stock price points to plot P&L. If ```None``` defaults to 100.
+
+#### Returns
+
+- None
+    - The function does not return a value but generates a plot of the P&L.
 
 #### Examples
 
@@ -270,8 +295,13 @@ Strangle(S, K1, K2, sigma, r, T, model="BS", num_points=100)
         - ```"BS"```: Monte Carlo simulation
 - S_max : *float, optional*
     - Maximum underlying price to show on x-axis in P&L plot. If ```None``` defaults to ```1.5 * K2```.
--num_points : *int, optional*
+- num_points : *int, optional*
     - Number of stock price points to plot P&L. If ```None``` defaults to 100.
+
+#### Returns
+
+- None
+    - The function does not return a value but generates a plot of the P&L and prints an error message if ```K2 <= K1```.
 
 #### Examples
 
@@ -317,8 +347,13 @@ Collar(S, K1, K2, sigma, r, T, model="BS", num_points=100)
         - ```"BS"```: Monte Carlo simulation
 - S_max : *float, optional*
     - Maximum underlying price to show on x-axis in P&L plot. If ```None``` defaults to ```1.5 * K2```.
--num_points : *int, optional*
+- num_points : *int, optional*
     - Number of stock price points to plot P&L. If ```None``` defaults to 100.
+
+#### Returns
+
+- None
+    - The function does not return a value but generates a plot of the P&L and prints an error message if ```K2 <= K1```.
 
 #### Examples
 
