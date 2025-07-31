@@ -1,3 +1,4 @@
+import numpy as np
 import math
 
 """
@@ -58,21 +59,20 @@ class Binomial:
             raise ValueError("Invalid input values.")
 
         # Initialize asset prices at maturity
-        ST = [0] * (Binomial.N + 1)
-        for i in range(Binomial.N + 1):
-            ST[i] = self.S * (self.u ** (Binomial.N - i)) * (self.d ** i)
+        # Vector of indices 0 to N
+        i = np.arange(Binomial.N + 1)
 
-        # Initialize option values at maturity
-        option_values = [0] * (Binomial.N + 1)
-        for i in range(Binomial.N + 1):
-            if self.option_type == 'call':
-                option_values[i] = max(0, ST[i] - self.K)
-            else:
-                option_values[i] = max(0, self.K - ST[i])
+        # Calculate asset prices at maturity
+        ST = self.S * (self.u ** (Binomial.N - i)) * (self.d ** i)
 
-        # Step back through the tree
+        # Option values at maturity
+        if self.option_type == 'call':
+            option_values = np.maximum(0, ST - self.K)
+        else:
+            option_values = np.maximum(0, self.K - ST)
+
+        # Step backward through the tree
         for j in range(Binomial.N - 1, -1, -1):
-            for i in range(j + 1):
-                option_values[i] = math.exp(-self.r * self.dt) * (self.p * option_values[i] + (1 - self.p) * option_values[i + 1])
+            option_values = np.exp(-self.r * self.dt) * (self.p * option_values[:-1] + (1 - self.p) * option_values[1:])
 
         return option_values[0]
