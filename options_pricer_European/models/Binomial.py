@@ -1,4 +1,5 @@
 
+
 import numpy as np
 import math
 
@@ -44,7 +45,7 @@ class Binomial:
         r: risk-free interest rate
         T: time to maturity in years
         """
-
+        
     def compute_constants(self)
         self.dt = self.T / Binomial.N
         self.u = math.exp(self.sigma * math.sqrt(self.dt))

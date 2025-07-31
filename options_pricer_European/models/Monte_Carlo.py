@@ -1,8 +1,10 @@
 
+
 """
 The code given below has errors in the Control Variates (no error with delta_calc() or delta function in BlackScholes class) - the
 obtained standard error is exceptionally high.
 """
+
 import math
 import numpy as np
 import pandas as pd
@@ -10,7 +12,6 @@ import datetime
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 from Black_Scholes import BlackScholes
-from pandas_datareader import data as pdr
 
 
 class MonteCarlo:
@@ -39,6 +40,9 @@ class MonteCarlo:
         r: risk-free interest rate
         T: time to maturity in years
         type: 'call' or 'put'
+        """
+
+        """
         distribution: distribution for generating random shocks, default is standard normal
         """
 
@@ -165,7 +169,7 @@ class MonteCarlo:
     """
     Calculation of stock price using control variates to reduce variance:
     """
-=======
+
 
     def calculate_option_price(self, ST):
         # Compute Expectation and SE
@@ -230,4 +234,3 @@ class MonteCarlo:
 mc=MonteCarlo(S=101.15, K=98.01, vol=0.0991, r=0.015, T=0.164, option_type='call')    
 print(f"Option Price: {mc.simulate()[0]}")
 print(f"Standard Error: {mc.simulate()[1]}")
-
