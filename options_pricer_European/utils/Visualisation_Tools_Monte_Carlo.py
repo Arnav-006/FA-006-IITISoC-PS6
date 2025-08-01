@@ -7,6 +7,7 @@ from scipy import stats
 from options_pricer_European.utils.Greeks import delta, gamma, vega, theta
 
 
+
 class MC_Visualiser:
     def __init__(self, obj):        
         self.mc=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type)

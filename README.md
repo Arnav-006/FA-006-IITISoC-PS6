@@ -1,3 +1,4 @@
+
 # FA-006-IITISoC-PS6
 This repository contains an extensive python package for pricing options.
 📈 Black-Scholes Option Pricing Model
@@ -735,7 +736,4 @@ Vega: Measures exposure to volatility.\
 Theta: Shows time decay—crucial for short-term options.\
 Rho: Helps adjust strategies in response to interest rate changes.\
 Why helpful: Institutions and funds use these sensitivities to hedge positions and manage risk.\ -->
-
-
-
 

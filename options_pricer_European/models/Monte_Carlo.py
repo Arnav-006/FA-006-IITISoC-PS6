@@ -1,16 +1,17 @@
 
 
+
 """
 The code given below has errors in the Control Variates (no error with delta_calc() or delta function in BlackScholes class) - the
 obtained standard error is exceptionally high.
 """
+
 
 import math
 import numpy as np
 import pandas as pd
 import datetime
 import scipy.stats as stats
-import matplotlib.pyplot as plt
 from Black_Scholes import BlackScholes
 
 
@@ -25,6 +26,7 @@ class MonteCarlo:
     """
     In order to implement theta option Greek we need to accept a deviation parameter 'dev' for time to maturiy.
     """
+
     def __init__(self, S, K, vol, r, T, option_type, dev_0=0, dev_1=0, dev_2=0):
         self.S = S+dev_0
         self.K = K
@@ -42,9 +44,7 @@ class MonteCarlo:
         type: 'call' or 'put'
         """
 
-        """
-        distribution: distribution for generating random shocks, default is standard normal
-        """
+
 
     """
     Parses data from the CSV file, to get the value of the volatility.
@@ -234,3 +234,4 @@ class MonteCarlo:
 mc=MonteCarlo(S=101.15, K=98.01, vol=0.0991, r=0.015, T=0.164, option_type='call')    
 print(f"Option Price: {mc.simulate()[0]}")
 print(f"Standard Error: {mc.simulate()[1]}")
+

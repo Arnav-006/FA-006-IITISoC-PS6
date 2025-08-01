@@ -1,5 +1,4 @@
 
-
 import numpy as np
 import math
 
@@ -38,6 +37,7 @@ class Binomial:
         self.r = r
         self.T = T+eps_2
         self.option_type = option_type
+
         """
         S: stock price
         K: strike price

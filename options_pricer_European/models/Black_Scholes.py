@@ -39,5 +39,3 @@ class BlackScholes:
     def rho(self, option_type):
         rho_val = self.K * self.T * np.exp(-self.r * self.T)
         return rho_val * norm.cdf(self.d2) / 100 if option_type == 'call' else -rho_val * norm.cdf(-self.d2) / 100
-
-
