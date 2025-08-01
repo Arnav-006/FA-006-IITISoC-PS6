@@ -244,7 +244,7 @@ binModel = Binomial(S = 200, K = 203, sigma = 0.35, r = 0.03, T = 0.5, option_ty
         - ```u``` : factor for upward movement at each step
         - ```d``` : factor for downward movement at each step
         - ```p``` : defined as $p = \frac{e^{r \cdot dt} - d} {u - d}$
-        - ```discount``` : total payoff discount defined as $discount = e^{r \cdot T}$
+        - ```discount``` : total payoff discount defined as $discount = e^{-r \cdot T}$
     - Parameters : ```None```
     - Returns : ```None```
 
