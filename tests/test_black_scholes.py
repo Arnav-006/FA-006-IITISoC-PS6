@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from options_pricer_European.models.Black_Scholes import BlackScholes
-from options_pricer_European.utils.Visualisation_Tools_Black_Scholes import VisualisationTools
+from options_pricer_European.utils.Visualisation_Tools_Black_Scholes import BSOptionsVisualizer
 
 @pytest.fixture
 def bs_call():
@@ -21,7 +21,7 @@ def test_greeks_signs(bs_call):
     assert isinstance(bs_call.theta('call'), float)
 
 def test_visualizer_dataframe():
-    vis = OptionVisualizer(K=17750, r=0.10, sigma=0.0839, T=6/365)
+    vis = BSOptionsVisualizer(K=17750, r=0.10, sigma=0.0839, T=6/365)
     vis.generate_data()
     df = vis.df
     assert isinstance(df, pd.DataFrame)
