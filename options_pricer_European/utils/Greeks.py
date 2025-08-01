@@ -21,8 +21,9 @@ def delta(type, obj, dev=0):
             montecarlo_1=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, eps+dev)
 
             # Change of $1 assumed in the stock price
-            return (montecarlo_1.calculate_option_price(montecarlo_1.calculate_stock_price())[0]-
-                    montecarlo_0.calculate_option_price(montecarlo_0.calculate_stock_price())[0])/eps
+            return (montecarlo_1.calculate_option_price(montecarlo_1.calculate_stock_price(), eps)[0]-
+                    montecarlo_0.calculate_option_price(montecarlo_0.calculate_stock_price(), 0)[0])/eps
+
         case 'BS':
             bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
             return bs.delta(option_type=obj.option_type)
