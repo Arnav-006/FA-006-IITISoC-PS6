@@ -1,9 +1,9 @@
 #This code requires certain changes to re-configure it with Monte_Carlo.py
 
 
-from options_pricer.models.Monte_Carlo import MonteCarlo 
-from options_pricer.models.Black_Scholes import BlackScholes
-from options_pricer.models.Binomial import Binomial
+from options_pricer_European.models.Monte_Carlo import MonteCarlo 
+from options_pricer_European.models.Black_Scholes import BlackScholes
+from options_pricer_European.models.Binomial import Binomial
 
 """
 The plan is to implement the greek functions on the objects of the models which would have parameters 
