@@ -8,15 +8,26 @@ from ..models.Black_Scholes import BlackScholes
 
 def IV_NewRaph(S0,K,r,T,market_price,op_type='call',tol=0.00001):
     """
-    S0 - current underlying price
-    K - strike price
-    r - risk-free rate
-    T - time to maturity
-    market_price - current price of option
+    This function uses the classic Newton-Raphson algorithm for finding the implied volatility using the Black-Scholes model.
 
-    From the BS model, the price of an option V = f(sigma, .), vega = dV/dsigma = f'(sigma, .)
-    And we need to find the root for f(sigma, .) - V = 0 [solve for sigma that makes the LHS 0]
+    Usage:
+      IV_NewRaph(S0,K,r,T,market_price,op_type='call',tol=0.00001)
 
+    Parameters:
+      - S0 : float - Current underlying price.
+      - K : float - Strike price for option contract.
+      - r : float - Risk-free rate (annualized, as a decimal).
+      - T : float - Time to maturity (in years).
+      - market_price : float - Current price of option contract in market.
+      - op_type : str, optional - Type of option, accepts one of two values - "call" or "put", defaults to call.
+      - tol : float, optional - The tolerance that decides how accurate the returned value will be, defaults to 1e-5.
+
+    Returns:
+      - Positive implied volatility if a valid market price is input, else zero.
+
+    Example:
+      IV_NewRaph(160,156,0.05,0.25,6.45)    #find IV for call option with default option type "call" and default tolerance 1e-5
+      IV_NewRaph(250,245,0.06,30/365,0.65,op_type='put',tol=1e-6)    #IV for option of type "put" and tolerance 1e-6
     """
     
     max_it = 1000
