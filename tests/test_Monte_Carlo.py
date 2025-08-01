@@ -1,5 +1,5 @@
 import pytest
-from options_pricer.models.Monte_Carlo import MonteCarlo
+from options_pricer_European.models.Monte_Carlo import MonteCarlo
 
 S = 101.15          #stock price
 K = 98.01           #strike price

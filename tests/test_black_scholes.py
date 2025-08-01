@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
-from option_pricer.models.Black_Scholes import BlackScholes
-from option_pricer.utils.Visulisation_Tools import VisualisationTools
+from options_pricer_European.models.Black_Scholes import BlackScholes
+from options_pricer_European.utils.Visualisation_Tools_Black_Scholes import VisualisationTools
 
 @pytest.fixture
 def bs_call():
