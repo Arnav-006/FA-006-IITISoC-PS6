@@ -25,14 +25,14 @@ class MonteCarlo:
     """
     In order to implement theta option Greek we need to accept a deviation parameter 'dev' for time to maturiy.
     """
-    def __init__(self, S, K, vol, r, T, option_type, dev_0=0, dev_1=0, dev_2=0, distribution=stats.norm):
+    def __init__(self, S, K, vol, r, T, option_type, dev_0=0, dev_1=0, dev_2=0):
         self.S = S+dev_0
         self.K = K
         self.vol = vol+dev_2
         self.r = r
         self.T = T+dev_1
         self.option_type = option_type
-        self.distribution = distribution
+
         """
         S: stock price
         K: strike price

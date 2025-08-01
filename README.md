@@ -3,9 +3,9 @@ This repository contains an extensive python package for pricing options.
 📈 Black-Scholes Option Pricing Model
 This repository implements the Black-Scholes model to price European call and put options, along with visualizations of various Greeks (Delta, Gamma, Vega, Theta, Rho) and time-based animations. It is designed for interactive use in Google Colab and VS Code with support for Plotly, Matplotlib, and NumPy.
 
-## 🔧 Features
+# 🔧 Features
 
-### 📊 European Options Pricing
+## 📊 European Options Pricing
 
 * Binomial Model
 
@@ -15,34 +15,34 @@ This repository implements the Black-Scholes model to price European call and pu
 
 * Heston Model
 
-### 📊 American Options Pricing
+## 📊 American Options Pricing
 
 * Binomial Model
 
 * Monte Carlo Simulation
 
-### ⚙️ Greeks Calculation
+## ⚙️ Greeks Calculation
 
 * Delta, Gamma, Theta, Vega, Rho for supported models
 
-### 📉 Visualization Tools
+## 📉 Visualization Tools
 
 * Greeks vs. volatility, time to maturity, risk-free rate
 
 * Monte Carlo path evolution and histograms
 
-### 📊 Options Strategies
+## 📊 Options Strategies
 
 * Bull Call Spread, Bull Put Spread, Straddle, Strangle, Collar, and more
 
-### 📈 Implied Volatility Surface
+## 📈 Implied Volatility Surface
 
 * Surface generation tools for volatility analysis <br> <br> 
 
 
 
 
-## 🗂️ Package Structure
+# 🗂️ Package Structure
 
 ``` markdown
 options_pricer/
@@ -85,6 +85,7 @@ options_pricer/
 ```
 <br> <br>
 
+# Models for European Options
 
 ## The Black-Scholes Model
 The Black-Scholes model is a mathematical model for pricing European-style options. It provides closed-form formulas for calculating the theoretical value of options, assuming the underlying asset follows geometric Brownian motion with constant volatility and interest rates.
@@ -255,6 +256,74 @@ binModel = Binomial(S = 200, K = 203, sigma = 0.35, r = 0.03, T = 0.5, option_ty
         - The option price calculated.
 
 ## Monte Carlo Model (European Options)
+
+Monte Carlo simulation is extensively used in pricing European, American as well as exotic options. The speciality of this model lies in the fact that it can provide a good estmiate of the parameters of any system that cannot be modelled using analytical approaches like solving differential equations. 
+
+The movement of the price of stock can't be modelled accurately due to its dependence on innumerable factors in complex ways. It thus, lies beyond the scope of any existing analytical method. Monte Carlo solves the problem by approximating the stock prices to follow **Geometric Brownian Motion**. It adopts risk-neutral pricing to derive the value of the option from the future payoff averaged over large enough number of simulations.
+
+### **Usage:**
+
+#### *class* MonteCarlo
+
+- Class to implement the Monte Carlo option pricing model, with methods to compute model constants and price.
+
+- *module* : **option_pricer_European.models.Monte_Carlo**
+
+#### Usage
+
+```python
+#create binModel object of class Binomial
+mcModel = MonteCarlo(S=101.15, K=98.01, vol=0.90, r=0.02, T=0.14, option_type='c', dev_0=0, dev_1=0, dev_2=0)
+```
+> **Note**:
+    > The time argument accepts the input as a fraction of one year.
+
+
+#### Parameters
+
+- S : *float*
+    - Current price of underlying asset.
+- K : *float*
+    - Strike price for option contract.
+- vol : *float*
+    - Volatility for underlying (as a decimal).
+- r : *float*
+    - Risk-free interest rate (annualized, as a decimal).
+- T : *float*
+    - Time upto expiration for option contract.
+- option_type : *str, optional*
+    - Type of option, accepts one of two values : ```call``` or ```put```.
+- dev_0 : *float, optional*
+    - tolerance in ```S```, such that instance variable for underlying price stores ```S+eps_1```. Defaults to 0.
+- dev_1 : *float, optional*
+    - tolerance in ```sigma```, such that instance variable for volatility stores ```sigma+eps_1```. Defaults to 0.
+- dev_2 : *float, optional*
+    - tolerance in ```T```, such that instance variable for expiration time stores ```T+eps_1```. Defaults to 0.
+
+> **Note**:
+    > dev_0, dev_1 and dev_2 parameters are defined solely for the calculation of Greeks, they play no role in calculation of option price at maturity.
+
+#### Returns
+- object of class MonteCarlo
+
+#### Methods
+
+- #### compute_constants()
+    - Defines instance variables: ```dt```,,,,```discount``` based on 
+        - ```dt``` : duration of one time step
+        - ```u``` : factor for upward movement at each step
+        - ```d``` : factor for downward movement at each step
+        - ```p``` : defined as $p = \frac{e^{r \cdot dt} - d} {u - d}$
+        - ```discount``` : total payoff discount defined as $discount = e^{-r \cdot T}$
+    - Parameters : ```None```
+    - Returns : ```None```
+
+- #### price_options()
+    - Calculates the option price using the binomial pricing model.
+    - Parameters : ```None```
+    - Returns 
+        - The option price calculated.
+
 
 <!-- ## Visualizations
 2D plots: Option price vs stock price\
