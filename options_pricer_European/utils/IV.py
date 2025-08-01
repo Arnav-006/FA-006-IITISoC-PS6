@@ -79,3 +79,52 @@ def IV_Brent(S0,K,r,T,market_price,op_type='call'):
         return IV
     except ValueError:
         return np.nan
+
+def IV_Binomial_Bisection(S, K, r, T, market_price, option_type='call', N=100, tol=1e-5, max_iter=100):
+    """
+    Implied volatility using bisection method on Binomial Model.
+
+    Usage:
+    IV_Binomial_Bisection(S, K, r, T, market_price, option_type='call', N=100, tol=1e-5, max_iter=100)
+    
+    Parameters:
+    - S: float : Spot price
+    - K: float : Strike price
+    - r: float : Risk-free rate
+    - T: float : Time to maturity (in years)
+    - market_price: float : Observed market option price
+    - option_type: string :'call' or 'put'
+    - N: int : number of binomial steps
+    - tol: float : convergence tolerance
+    - max_iter: int : maximum iterations
+    
+    Returns:
+    - Implied volatility (float) or None if not found
+
+    Example:
+    IV_Binomial_Bisection(160,156,0.05,0.25,6.45) #It takes by default option type as call, N=100, tol=1e-5, max iterations=100.
+    IV_Binomial_Bisection(250,245,0.06,0.50,2.45,option_type='put',N=90,tol=1e-6,max_iter=150) #cusotmized values for N, max iterations, option type.
+    """
+    Binomial.N = N
+
+    low_vol = 1e-5
+    high_vol = 5.0
+
+    for _ in range(max_iter):
+        mid_vol = (low_vol + high_vol) / 2
+        model = Binomial(S, K, mid_vol, r, T, option_type)
+        try:
+            price = model.price_options()
+        except:
+            return None  # In case of model failure
+        
+        diff = price - market_price
+
+        if abs(diff) < tol:
+            return mid_vol
+        if diff > 0:
+            high_vol = mid_vol
+        else:
+            low_vol = mid_vol
+
+    return None  # did not converge within max_iter
