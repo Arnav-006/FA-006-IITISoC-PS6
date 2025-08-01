@@ -8,7 +8,7 @@ from ..models.Black_Scholes import BlackScholes
 
 def IV_NewRaph(S0,K,r,T,market_price,op_type='call',tol=0.00001):
     """
-    This function uses the classic Newton-Raphson algorithm for finding the implied volatility using the Black-Scholes model.
+    This function uses the classic Newton-Raphson algorithm(Read more https://www.geeksforgeeks.org/engineering-mathematics/newton-raphson-method/) for finding the implied volatility using the Black-Scholes model.
 
     Usage:
       IV_NewRaph(S0,K,r,T,market_price,op_type='call',tol=0.00001)
@@ -49,11 +49,33 @@ def IV_NewRaph(S0,K,r,T,market_price,op_type='call',tol=0.00001):
     return max(0,vol_new)
 
 def IV_Brent(S0,K,r,T,market_price,op_type='call'):
+    """
+    This function uses the Brent's algorithm for finding the implied volatility using the Black-Scholes model. The implementation for Brent's method is taken from scipy.optimize (https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.brentq.html#brentq).
+    
+
+    Usage:
+      IV_Brent(S0,K,r,T,market_price,op_type='call')
+
+    Parameters:
+      - S0 : float - Current underlying price.
+      - K : float - Strike price for option contract.
+      - r : float - Risk-free rate (annualized, as a decimal).
+      - T : float - Time to maturity (in years).
+      - market_price : float - Current price of option contract in market.
+      - op_type : str, optional - Type of option, accepts one of two values - "call" or "put", defaults to call.
+
+    Returns:
+      - Positive implied volatility if a valid market price is input, else ```np.nan```.
+
+    Example:
+      IV_Brent(160,156,0.05,0.25,6.45)    #find IV for call option with default option type "call"
+      IV_Brent(250,245,0.06,30/365,0.65,op_type='put')    #IV for option of type "put"
+    """
     def object_func(sigma):
         model_price = BlackScholes(S0,K,sigma,r,T).price(op_type)
         return model_price - market_price
     try:
-        IV = optimize.brentq(object_func,-1.0,5.0)
+        IV = optimize.brentq(object_func,-0.5,5.0)
         return IV
     except ValueError:
         return np.nan
