@@ -1,63 +1,95 @@
-
-from options_pricer_European.models.Black_Scholes import BlackScholes 
 import numpy as np
 import pandas as pd
-from scipy.stats import norm
-import plotly.graph_objs as go
+import plotly.graph_objects as go
+import plotly.express as px
 from plotly.subplots import make_subplots
+from options_pricer_European.models.Black_Scholes import BlackScholes
 
-class BS_Options_Visualizer:
-    def __init__(self, K, r, sigma, T, option_types=('call', 'put')):
+class BSOptionsVisualizer:
+    def __init__(self, K, r, sigma, option_types=('call', 'put')):
         self.K = K
         self.r = r
         self.sigma = sigma
-        self.T = T
         self.option_types = option_types
-        self.stock_prices = np.linspace(K * 0.8, K * 1.2, 100)
-        self.df = None
 
-    def generate_data(self):
+    def generate_data(self, T_days_range, mode='time'):
+        stock_prices = np.linspace(self.K * 0.8, self.K * 1.2, 100)
         rows = []
-        for S in self.stock_prices:
+
+        for T_days in T_days_range:
+            T = T_days / 365
+            for S in stock_prices:
+                for opt_type in self.option_types:
+                    bs = BlackScholes(S, self.K, self.sigma, self.r, T)
+                    rows.append({
+                        'Stock Price': S,
+                        'Option Type': opt_type,
+                        'T_days': T_days,
+                        'Price': bs.price(opt_type),
+                        'Delta': bs.delta(opt_type),
+                        'Gamma': bs.gamma(),
+                        'Vega': bs.vega(),
+                        'Theta': bs.theta(opt_type),
+                        'Rho': bs.rho(opt_type)
+                    })
+            if mode == 'stock':
+                break  # Only use the first T_days for static plot
+        return pd.DataFrame(rows)
+
+    def visualize(self, mode='stock', y_metric='Delta', option_type='call', T_days_static=30, T_days_range=np.arange(7, 181, 7)):
+        """
+        mode: 'stock' (for static) or 'time' (for animation)
+        y_metric: Greek or 'Price'
+        option_type: 'call' or 'put'
+        """
+        if mode not in ['stock', 'time']:
+            raise ValueError("Invalid mode. Choose 'stock' or 'time'.")
+
+        if y_metric not in ['Delta', 'Gamma', 'Vega', 'Theta', 'Rho', 'Price']:
+            raise ValueError("Invalid metric. Choose from Delta, Gamma, Vega, Theta, Rho, Price.")
+
+        if mode == 'stock':
+            df = self.generate_data([T_days_static], mode='stock')
+            fig = go.Figure()
+
             for opt_type in self.option_types:
-                bs = BlackScholes(S, self.K, self.sigma, self.r, self.T)
-                rows.append({
-                    'Stock Price': S,
-                    'Option Type': opt_type,
-                    'Price': bs.price(opt_type),
-                    'Delta': bs.delta(opt_type),
-                    'Gamma': bs.gamma(),
-                    'Vega': bs.vega(),
-                    'Theta': bs.theta(opt_type),
-                    'Rho': bs.rho(opt_type)
-                })
-        self.df = pd.DataFrame(rows)
+                data = df[df['Option Type'] == opt_type]
+                fig.add_trace(go.Scatter(
+                    x=data['Stock Price'],
+                    y=data[y_metric],
+                    mode='lines',
+                    name=f"{y_metric} ({opt_type})"
+                ))
 
-    def save_to_excel(self, filename='option_greeks.xlsx'):
-        self.df.to_excel(filename, index=False)
+            fig.update_layout(
+                title=f"{y_metric} vs Stock Price (T = {T_days_static} days)",
+                xaxis_title='Stock Price',
+                yaxis_title=y_metric,
+                height=500
+            )
+            fig.show()
 
-    def plot(self):
-        if self.df is None:
-            self.generate_data()
+        elif mode == 'time':
+            df = self.generate_data(T_days_range, mode='time')
+            df = df[df['Option Type'] == option_type]
 
-        fig = make_subplots(rows=3, cols=2, subplot_titles=('Delta', 'Gamma', 'Vega', 'Theta', 'Rho', 'Price'))
+            fig = px.line(
+                df,
+                x='Stock Price',
+                y=y_metric,
+                color='T_days',
+                animation_frame='T_days',
+                title=f"{option_type.capitalize()} Option: {y_metric} vs Stock Price over Time",
+                labels={"T_days": "Days to Expiry"}
+            )
+            fig.update_layout(height=500)
+            fig.show()
 
-        greeks = ['Delta', 'Gamma', 'Vega', 'Theta', 'Rho', 'Price']
-        row_col = [(1, 1), (1, 2), (2, 1), (2, 2), (3, 1), (3, 2)]
+# Initialize visualizer
+#vis = BSOptionsVisualizer(K=18000, r=0.1, sigma=0.08)
 
-        for (greek, (r, c)) in zip(greeks, row_col):
-            for opt_type in self.option_types:
-                data = self.df[self.df['Option Type'] == opt_type]
-                fig.add_trace(go.Scatter(x=data['Stock Price'], y=data[greek],
-                                         mode='lines', name=f'{greek} ({opt_type})'),
-                              row=r, col=c)
+# 🔵 Stock price vs Greek at fixed time
+#vis.visualize(mode='stock', y_metric='Vega', T_days_static=45)
 
-        fig.update_layout(height=1000, width=1000, title_text="Black-Scholes Option Greeks")
-        fig.show()
-
-# --- Run Visualization ---
-
-# vis = BS_Options_Visualizer(K=17750, r=0.10, sigma=0.0839, T=6/365)
-# vis.generate_data()
-# vis.plot()
-# vis.save_to_excel()
+# 🔴 Greek vs stock over time (animated)
+#vis.visualize(mode='time', y_metric='Theta', option_type='call')
