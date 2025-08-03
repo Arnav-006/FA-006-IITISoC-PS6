@@ -1139,7 +1139,6 @@ Calculates the Vega of an option, which measures the sensitivity of the option's
     - *float*
         - The calculated Vega value.
 
-<<<<<<< HEAD
 # Models for American Options
 
 ## The Binomial Model (American Options)
@@ -1204,6 +1203,5 @@ binModel = Binomial(S = 200, K = 203, sigma = 0.35, r = 0.03, T = 0.5, option_ty
     - Parameters : ```None```
     - Returns 
         - The option price calculated.
-=======
 
->>>>>>> 644f8ddbe675292ae1461245609770e3435c05e9
+
