@@ -190,6 +190,8 @@ myModel = BlackScholes(S, K, sigma, r, T)
         - option_type : *str* - the type of option contract, allowed values are ```"call"``` and ```"put"```.
     - Returns : *float* - The value of rho calculated using Black-Scholes model.
 
+---
+
 ## The Binomial Model (European Options)
 
 A simple and intuitive model which can be used for pricing both American and European options, based on breaking down the time until an option's expiration into a series of smaller, distinct time steps.
@@ -252,6 +254,8 @@ binModel = Binomial(S = 200, K = 203, sigma = 0.35, r = 0.03, T = 0.5, option_ty
     - Parameters : ```None```
     - Returns 
         - The option price calculated.
+
+---
 
 ## Monte Carlo Model (European Options)
 
@@ -344,7 +348,110 @@ mcModel = MonteCarlo(S=101.15, K=98.01, vol=0.90, r=0.02, T=0.14, option_type='c
     - Returns : ```C0``` and ```SE```
         - Option Price
         - Standard Error
-<br><br><br>
+
+---
+
+## Heston Stochastic Volatility Model
+
+A powerful and realistic model for pricing **European options** by allowing volatility to be **stochastic and mean-reverting** — a more accurate reflection of real-world market behavior than the constant-volatility assumption in Black-Scholes.
+
+The Heston model simulates how both the **underlying asset price** and its **volatility** evolve over time using correlated stochastic differential equations. It breaks the time to maturity into discrete intervals and uses **Monte Carlo simulation** to generate multiple paths for both stock price and variance. Each path is used to compute the payoff, which is then discounted back to the present and averaged to compute the fair price.
+
+#### class Heston
+
+* Class to implement the Heston model using the Euler-Maruyama method for simulating asset and volatility paths, and pricing European options via Monte Carlo.
+* Module : *options_pricer.models.Heston*
+
+#### Usage
+
+```python
+# Create a Heston model object
+heston_model = Heston(
+    S0 = 100, K = 100, v0 = 0.04, r = 0.05, T = 1.0,
+    kappa = 2.0, theta = 0.04, xi = 0.5, rho = -0.7,
+    option_type = 'call', steps = 250, paths = 10000
+)
+
+# Price the option
+price, stderr = heston_model.price()
+```
+
+#### Parameters
+
+* `S0` : float
+
+  * Current price of underlying asset.
+
+* `K` : float
+
+  * Strike price of the option contract.
+
+* `v0` : float
+
+  * Initial variance (volatility squared) of the underlying asset.
+
+* `r` : float
+
+  * Risk-free interest rate (annualized, as a decimal).
+
+* `T` : float
+
+  * Time to expiration in years.
+
+* `kappa` : float
+
+  * Speed at which variance reverts to the long-term mean.
+
+* `theta` : float
+
+  * Long-term mean of the variance.
+
+* `xi` : float
+
+  * Volatility of volatility (vol of the variance process).
+
+* `rho` : float
+
+  * Correlation between the asset price and its variance.
+
+* `option_type` : str
+
+  * Type of option: accepts `'call'` or `'put'`.
+
+* `steps` : int, optional
+
+  * Number of discrete time steps in the simulation. Default is 250.
+
+* `paths` : int, optional
+
+  * Number of Monte Carlo paths to simulate. Default is 10,000.
+
+#### Returns
+
+* Object of class `Heston`.
+
+#### Methods
+
+* #### simulate\_paths()
+
+  * Simulates stock and variance paths under the Heston model using the Euler-Maruyama method.
+  * Uses two correlated normal random variables at each time step.
+  * Returns:
+
+    * `S_paths` (np.ndarray): Simulated paths for stock prices
+    * `v_paths` (np.ndarray): Simulated paths for variances
+
+* #### price()
+
+  * Prices the option based on Monte Carlo simulation.
+  * Computes the discounted payoff at maturity.
+  * Returns:
+
+    * Estimated option price
+    * Standard error of the estimate
+
+---
+<br>
 
 # Utilities for European Options
 
@@ -405,7 +512,6 @@ mcv = MC_Visualiser(mc)
     - Displays the variation of Greeks at maturity with varying time to maturity
     - Parameters : ```type``` (type of Greek - *delta*, *gamma*, *theta*, *rho*, *vega*)
     - Returns : ```None```
-
 
 
 
@@ -774,6 +880,7 @@ Collar(S=100, K1=95, K2=105, sigma=0.2, r=0.05, T=1.0, model="BS")
 Collar(S=50, K1=45, K2=55, sigma=0.25, r=0.03, T=0.5, model="BIN", num_points=200)
 ```
 ---
+
 ## Implied Volatility Calculation Functions
 
 Finding immplied volatility using option contract parameters and the market price of option by various different root finding algorithms.
@@ -913,3 +1020,125 @@ IV_Binomial_Bisection(S, K, r, T, market_price, option_type='call', N=100, tol=1
 IV_Binomial_Bisection(160,156,0.05,0.25,6.45) #It takes by default option type as call, N=100, tol=1e-5, max iterations=100.
 IV_Binomial_Bisection(250,245,0.06,0.50,2.45,option_type='put',N=90,tol=1e-6,max_iter=150) #customized values for N, max iterations, option type.
 ```
+
+## Visualisation Tools - Black Scholes
+
+Various visualization tools are provided for European options using the Black-Scholes model, implemented using
+the BlackScholes class under models.
+
+*class* BSOptionsVisualizer
+
+*module* - **options_pricer_European.utils.Visualization_Tools_Black_Scholes**
+
+Class that implements various methods to visualize how options' prices varies using plotly and pandas
+
+### Usage
+```python
+vis = BSOptionsVisualizer(K, r, sigma, option_types=('call', 'put'))
+```
+
+### Parameters
+
+- K : *float*
+    - The strike price.
+- r : *float*
+    - The risk-free rate of interest(annualized, as a decimal).
+- sigma : *float*
+    - The volatility of the underlying stock.
+- option_types : *tuple*
+    - Tuple of types of options used for making database.
+
+### Returns
+- object of class BSOptionsVisualizer
+
+### Methods
+
+- generate_data()
+    - returns a Pandas dataframe containing prices calculated for various option contracts
+    - Parameters:
+        - T_days_range : *array-type* - a range like object that is used for choosing values of time of expiration.
+        - mode : *str, optional* - mode that specifies what to make the graph against. Accepts ```stock```or ```time```.
+    - Returns:
+        - a Pandas dataframe containing prices data for options dataframe
+
+- visualize()
+    - The visualize function generates visualizations of option pricing metrics (Greeks and price) against the underlying stock price. It offers two primary modes of operation: 'stock' for a static visualization at a single point in time, and 'time' for an animated visualization showing the evolution of the metrics as the time to expiration changes. The function relies on a self.generate_data method (assumed to exist within the class) to produce the necessary data for plotting.
+    - Parameters:
+        - mode: *str, optional* - The visualization mode. Can take inputs ```stock``` and ```time```. Defaults to ```stock```.
+        - y_metric: *str, optional* - The metric to be plotted on the y-axis. Defaults to ```Delta```. Valid values: ```Delta```, ```Gamma```, ```Vega```, ```Theta```, ```Rho```, ```Price```.
+        - option_type: *str, optional* - The type of option to visualize. Defaults to ```call```. Valid values: ```call```, ```put```. This parameter is only used in    ```time``` mode.
+        - T_days_static: *int, optional* - The fixed number of days to expiry for the ```stock``` mode. Defaults to ```30```.
+        - T_days_range: *numpy.ndarray, optional* - A range of days to expiry for the ```time``` mode. Defaults to ```np.arange(7, 181, 7)```.
+
+
+
+## Greek Calculation Functions
+
+This module provides functions for calculating the Greek values of European options using three different pricing models: Monte Carlo (`MC`), Black-Scholes (`BS`), and the Binomial Option Pricing Model (`BOPM`).
+
+### Dependencies
+
+- `options_pricer_European.models.Monte_Carlo`: `MonteCarlo`
+- `options_pricer_European.models.Black_Scholes`: `BlackScholes`
+- `options_pricer_European.models.Binomial`: `Binomial`
+
+### Functions
+
+#### `delta(type, obj, dev=0)`
+
+Calculates the Delta of an option, which measures the sensitivity of the option's price to a change in the price of the underlying asset.
+
+- **Parameters:**
+    - `type` : *str*
+        - The pricing model to use. Accepts `'MC'`, `'BS'`, or `'BOPM'`.
+    - `obj` : *object*
+        - An instance of one of the pricing model classes (`MonteCarlo`, `BlackScholes`, or `Binomial`) containing the option's parameters.
+    - `dev` : *float, optional*
+        - The deviation from the current stock price used for numerical approximation in the Monte Carlo method. Defaults to `0`.
+
+- **Returns:**
+    - *float*
+        - The calculated Delta value.
+
+#### `gamma(type, obj)`
+
+Calculates the Gamma of an option, which measures the rate of change of the Delta with respect to a change in the underlying stock's price.
+
+- **Parameters:**
+    - `type` : *str*
+        - The pricing model to use. Accepts `'MC'`, `'BS'`, or `'BOPM'`.
+    - `obj` : *object*
+        - An instance of one of the pricing model classes containing the option's parameters.
+
+- **Returns:**
+    - *float*
+        - The calculated Gamma value.
+
+#### `theta(type, obj)`
+
+Calculates the Theta of an option, which measures the rate of change in the option's price with respect to the passage of time (i.e., its time decay).
+
+- **Parameters:**
+    - `type` : *str*
+        - The pricing model to use. Accepts `'MC'`, `'BS'`, or `'BOPM'`.
+    - `obj` : *object*
+        - An instance of one of the pricing model classes containing the option's parameters.
+
+- **Returns:**
+    - *float*
+        - The calculated Theta value.
+
+#### `vega(type, obj)`
+
+Calculates the Vega of an option, which measures the sensitivity of the option's price to a change in the volatility of the underlying asset.
+
+- **Parameters:**
+    - `type` : *str*
+        - The pricing model to use. Accepts `'MC'`, `'BS'`, or `'BOPM'`.
+    - `obj` : *object*
+        - An instance of one of the pricing model classes containing the option's parameters.
+
+- **Returns:**
+    - *float*
+        - The calculated Vega value.
+
