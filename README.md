@@ -194,6 +194,8 @@ myModel = BlackScholes(S, K, sigma, r, T)
         - option_type : *str* - the type of option contract, allowed values are ```"call"``` and ```"put"```.
     - Returns : *float* - The value of rho calculated using Black-Scholes model.
 
+---
+
 ## The Binomial Model (European Options)
 
 A simple and intuitive model which can be used for pricing both American and European options, based on breaking down the time until an option's expiration into a series of smaller, distinct time steps.
@@ -256,6 +258,8 @@ binModel = Binomial(S = 200, K = 203, sigma = 0.35, r = 0.03, T = 0.5, option_ty
     - Parameters : ```None```
     - Returns 
         - The option price calculated.
+
+---
 
 ## Monte Carlo Model (European Options)
 
@@ -327,7 +331,9 @@ mcModel = MonteCarlo(S=101.15, K=98.01, vol=0.90, r=0.02, T=0.14, option_type='c
         - The option price calculated.
 <br><br><br>
 
-# Strategies
+# Utilities for European options
+
+## Strategies
 Functions for creating Profit/Loss graphs for classical option trading strategies, that use option pricing models specified by the user to find the option premiums.
 
 ### Bull_Call_Spread
@@ -692,7 +698,7 @@ Collar(S=50, K1=45, K2=55, sigma=0.25, r=0.03, T=0.5, model="BIN", num_points=20
 ```
 ---
 
-# Implied Volatility Calculation Functions
+## Implied Volatility Calculation Functions
 
 Finding immplied volatility using option contract parameters and the market price of option by various different root finding algorithms.
 
@@ -831,3 +837,52 @@ IV_Binomial_Bisection(S, K, r, T, market_price, option_type='call', N=100, tol=1
 IV_Binomial_Bisection(160,156,0.05,0.25,6.45) #It takes by default option type as call, N=100, tol=1e-5, max iterations=100.
 IV_Binomial_Bisection(250,245,0.06,0.50,2.45,option_type='put',N=90,tol=1e-6,max_iter=150) #customized values for N, max iterations, option type.
 ```
+
+## Visualisation Tools for European Options
+
+Various visualization tools are provided for European options using the Black-Scholes model, implemented using
+the BlackScholes class under models.
+
+*class* BSOptionsVisualizer
+
+*module* - **options_pricer_European.utils.Visualization_Tools_Black_Scholes**
+
+Class that implements various methods to visualize how options' prices varies using plotly and pandas
+
+### Usage
+```python
+vis = BSOptionsVisualizer(K, r, sigma, option_types=('call', 'put'))
+```
+
+### Parameters
+
+- K : *float*
+    - The strike price.
+- r : *float*
+    - The risk-free rate of interest(annualized, as a decimal).
+- sigma : *float*
+    - The volatility of the underlying stock.
+- option_types : *tuple*
+    - Tuple of types of options used for making database.
+
+### Returns
+- object of class BSOptionsVisualizer
+
+### Methods
+
+- generate_data()
+    - returns a Pandas dataframe containing prices calculated for various option contracts
+    - Parameters:
+        - T_days_range : *array-type* - a range like object that is used for choosing values of time of expiration.
+        - mode : *str, optional* - mode that specifies what to make the graph against. Accepts ```stock```or ```time```.
+    - Returns:
+        - a Pandas dataframe containing prices data for options dataframe
+
+- visualize()
+    - The visualize function generates visualizations of option pricing metrics (Greeks and price) against the underlying stock price. It offers two primary modes of operation: 'stock' for a static visualization at a single point in time, and 'time' for an animated visualization showing the evolution of the metrics as the time to expiration changes. The function relies on a self.generate_data method (assumed to exist within the class) to produce the necessary data for plotting.
+    - Parameters:
+        - mode: *str, optional* - The visualization mode. Can take inputs ```stock``` and ```time```. Defaults to ```stock```.
+        - y_metric: *str, optional* - The metric to be plotted on the y-axis. Defaults to ```Delta```. Valid values: ```Delta```, ```Gamma```, ```Vega```, ```Theta```, ```Rho```, ```Price```.
+        - option_type: *str, optional* - The type of option to visualize. Defaults to ```call```. Valid values: ```call```, ```put```. This parameter is only used in    ```time``` mode.
+        - T_days_static: *int, optional* - The fixed number of days to expiry for the ```stock``` mode. Defaults to ```30```.
+        - T_days_range: *numpy.ndarray, optional* - A range of days to expiry for the ```time``` mode. Defaults to ```np.arange(7, 181, 7)```.
