@@ -69,11 +69,7 @@ options_pricer/
 │   │   ├── binomial.py
 │   │   └── monte_carlo.py
 │   └── utils/
-│       ├── greeks_calculators.py
-│       ├── visualisation_tools_black_scholes.py
-│       ├── visualisation_tools_monte_carlo.py
-│       ├── strategies.py
-│       └── implied_vol_surface.py
+│      
 │
 ├── tests/
 │   ├── test_binomial.py
@@ -259,7 +255,7 @@ binModel = Binomial(S = 200, K = 203, sigma = 0.35, r = 0.03, T = 0.5, option_ty
 
 ## Monte Carlo Model (European Options)
 
-Monte Carlo simulation is extensively used in pricing European, American as well as exotic options. The speciality of this model lies in the fact that it can provide a good estmiate of the parameters of any system that cannot be modelled using analytical approaches like solving differential equations. 
+Monte Carlo simulation is extensively used in pricing European, American as well as exotic options. The speciality of this model lies in the fact that it can provide a good estmiate of the parameters of any system that cannot be modelled using analytical approaches like by solving differential equations. 
 
 The movement of the price of stock can't be modelled accurately due to its dependence on innumerable factors in complex ways. It thus, lies beyond the scope of any existing analytical method. Monte Carlo solves the problem by approximating the stock prices to follow **Geometric Brownian Motion**. It adopts risk-neutral pricing to derive the value of the option from the future payoff averaged over large enough number of simulations.
 
@@ -311,23 +307,49 @@ mcModel = MonteCarlo(S=101.15, K=98.01, vol=0.90, r=0.02, T=0.14, option_type='c
 #### Methods
 
 - #### compute_constants()
-    - Defines instance variables: ```dt```,,,,```discount``` based on 
+    - Defines instance variables: 
         - ```dt``` : duration of one time step
-        - ```u``` : factor for upward movement at each step
-        - ```d``` : factor for downward movement at each step
-        - ```p``` : defined as $p = \frac{e^{r \cdot dt} - d} {u - d}$
-        - ```discount``` : total payoff discount defined as $discount = e^{-r \cdot T}$
+        - ```nudt``` : drift factor for modelling stock price movement
+        - ```volsdt``` : volatility of the underlying asset times the squareroot of time step
+        - ```lnS``` : log of the initial underlying asset price
+        - ```erdt``` : total payoff discount defined as $discount = e^{r\cdot T}$
+        - ```cv``` : control variate for delta hedging
+        - ```beta1``` : coefficient of control variate
     - Parameters : ```None```
     - Returns : ```None```
 
-- #### price_options()
-    - Calculates the option price using the binomial pricing model.
+- #### calculate_stock_price()
+    - Calculates the stock price using the equation for Brownian Motion.
     - Parameters : ```None```
-    - Returns 
-        - The option price calculated.
+    - Returns : ```ST``` and ```cv```
+        - The stock price matrix (price at each time step for all simulations)
+        - Control variate based on delta hedging
+
+- #### calculate_option_price()
+    - Calculates option price by finding the payoff at maturity and discouting it to present date 
+    - Adds the hedging factor to reduce the spread of all simulated values
+    - Parameters : ```ST``` and ```cv```
+    - Returns : ```C0``` and ```CT```
+        - Option Price 
+        - Payoffs after the final time step
+
+- #### delta_calc()
+    - Calculates delta corresponding to the option
+    - Parameters : ```None```
+    - Returns : ```delta```
+
+- #### simulate()
+    - a single callable function to run the entire process 
+    - Parameters : ```None```
+    - Returns : ```C0``` and ```SE```
+        - Option Price
+        - Standard Error
 <br><br><br>
 
-# Strategies
+# Utilities for European Options
+
+
+## Strategies
 Functions for creating Profit/Loss graphs for classical option trading strategies, that use option pricing models specified by the user to find the option premiums.
 
 ### Bull_Call_Spread
@@ -691,12 +713,11 @@ Collar(S=100, K1=95, K2=105, sigma=0.2, r=0.05, T=1.0, model="BS")
 Collar(S=50, K1=45, K2=55, sigma=0.25, r=0.03, T=0.5, model="BIN", num_points=200)
 ```
 ---
-
-# Implied Volatility Calculation Functions
+## Implied Volatility Calculation Functions
 
 Finding immplied volatility using option contract parameters and the market price of option by various different root finding algorithms.
 
-## 1. Newton-Raphson Method
+### 1. Newton-Raphson Method
 
 The Newton-Raphson method is a powerful iterative algorithm used to find the roots (or zeros) of a real-valued function. The method starts with an initial guess, $x_0$, for the root. It then uses the function's value, $f(x_n)$, and its first derivative, $f'(x_n)$, at that point to draw a tangent line. The next, and hopefully better, guess, $x_{n+1}$, is the point where this tangent line intersects the x-axis.
 
@@ -739,7 +760,7 @@ IV_NewRaph(160,156,0.05,0.25,6.45)    #find IV for call option with default opti
 IV_NewRaph(250,245,0.06,30/365,0.65,op_type='put',tol=1e-6)    #IV for option of type "put" and tolerance 1e-6
 ```
 
-## 2. Brent's Method
+### 2. Brent's Method
 
 Brent's method is a root-finding algorithm that combines the speed and guaranteed convergence of several other methods.
 
@@ -784,7 +805,7 @@ IV_Brent(160,156,0.05,0.25,6.45)    #find IV for call option with default option
 IV_Brent(250,245,0.06,30/365,0.65,op_type='put')    #IV for option of type "put"
 ```
 
-## 3. Bisection Method (for Binomial Model)
+### 3. Bisection Method (for Binomial Model)
 
 The bisection method is a simple and reliable root-finding algorithm.
 

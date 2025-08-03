@@ -166,26 +166,11 @@ class MonteCarlo:
 
     #     return C0, CT
 
+
     """
-    Calculation of stock price using control variates to reduce variance:
+    Stock price functions for each variance reduction method
     """
 
-
-    def calculate_option_price(self, ST):
-        # Compute Expectation and SE
-
-        if self.option_type == 'call':
-            # For call option
-            CT = np.maximum(0, ST - self.K)
-            C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
-        elif self.option_type == 'put':
-            # For put option
-            CT = np.maximum(0, self.K - ST)
-            C0 = np.exp(-self.r*self.T)*np.sum(CT[-1])/MonteCarlo.M
-
-        return C0, CT
-
-      
     def calculate_stock_price(self):
         self.compute_constants()
 
