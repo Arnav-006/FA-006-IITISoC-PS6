@@ -4,7 +4,12 @@ version="0.1.0"
 description="A Python package for options pricing"
 requires-python = ">=3.8"
 authors = [
-    { name="Your_Name", email="youremail@gmail.com"},
+    { name="Arnav Birari", git id="Arnav-006m"},
+    { name="Mihir Jain", git id="sunmjr"},
+    { name="Aayush Sharma", git id="sunio-bhatto"},
+    { name="Rudra Vavadiya", git id="Vavadiya-Rudra-Bhaveshbhai"},
+    { name="Ojashvi Jain", git id="Ojhasvi-jain""}
+
     ]
 dependencies = [
   "numpy>=1.20.0",
