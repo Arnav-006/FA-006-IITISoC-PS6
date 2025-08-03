@@ -134,15 +134,5 @@ class MC_Visualiser:
         plt.title('MC simulation of an option premium')
         plt.show()
 
-"""
-The following snippet is temporary and won't be there when the package is published.
-"""
 
-mc=MonteCarlo(101.15, 98.01, 0.0991, 0.01, 0.1644, 'call', 0, 0)
-mc_v=MC_Visualiser(mc)
-# mc_v.stock_graph()      #Variation of stock price with time until maturity
-# mc_v.option_price_graph()   #Variation of premium with time until maturity
-# mc_v.probability_distribution(3.86)     #Accuracy of the model
-# mc_v.histogram()        #Distribution of the results of the Monte Carlo simulation
-# mc_v.visualise_greeks('delta')
 
