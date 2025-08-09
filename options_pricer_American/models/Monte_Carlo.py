@@ -59,15 +59,11 @@ class MonteCarloAmerican():
 
             # --- Carriere: non-parametric regression on ITM paths only ---
             S_itm, Y  = self.S[itm,n], self.CF[itm,n+1]*self.discount
-            """
-            Understand lowess() function
-            """
+        
             cont_val  = lowess(endog=Y, exog=S_itm, frac=0.3, return_sorted=False)
 
             # Predict continuation value for *all* paths using nearest-neighbor rule
-            """
-            Understand interp1d() function
-            """
+        
             f = interp1d(S_itm, cont_val, fill_value="extrapolate")
             C_hat = f(self.S[:,n])                       # continuation estimate
 
@@ -77,9 +73,6 @@ class MonteCarloAmerican():
             self.CF[~exercise, n] = self.CF[~exercise,n+1]*self.discount
 
 
-        """
-        Understand this in depth
-        """
         # Price estimate (high bias)                
         V0_high = self.CF[:,1].mean()*self.discount
 
@@ -129,5 +122,3 @@ class MonteCarloAmerican():
 
 
 
-MCAme = MonteCarloAmerican(S=98.01, K=101.15, vol=0.2, r=0.05, T=1, option_type='put')
-MCAme.simulate()  # Simulating the American option pricing
