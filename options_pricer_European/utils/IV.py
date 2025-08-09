@@ -5,6 +5,8 @@
 
 from scipy import optimize
 from ..models.Black_Scholes import BlackScholes
+import numpy as np
+from ..models.Binomial import Binomial
 
 def IV_NewRaph(S0,K,r,T,market_price,op_type='call',tol=0.00001):
     """
