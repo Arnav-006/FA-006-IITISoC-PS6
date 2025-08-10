@@ -24,12 +24,12 @@ def delta(type, obj, dev=0):
             return (montecarlo_1.calculate_option_price(montecarlo_1.calculate_stock_price(), eps)[0]-
                     montecarlo_0.calculate_option_price(montecarlo_0.calculate_stock_price(), 0)[0])/eps
         case 'BS':
-            bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+            bs = BlackScholes(obj.S, obj.K, obj.sigma, obj.r, obj.T)
             return bs.delta(option_type=obj.option_type)
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, eps)
             binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, -eps)
-            delta = (binomial_1.price_options()["price"] - binomial_2.price_options()["price"]) / (2 * eps)
+            delta = (binomial_1.price_options() - binomial_2.price_options()) / (2 * eps)
             return delta
 
 def gamma(type, obj):
@@ -44,13 +44,13 @@ def gamma(type, obj):
             """
             return (delta_2 - delta_1) / (2*eps)
         case 'BS':
-            bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+            bs = BlackScholes(obj.S, obj.K, obj.sigma, obj.r, obj.T)
             return bs.gamma()
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, eps)
             binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, -eps)
             binomial_3=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0)
-            gamma = (binomial_1.price_options()["price"] - 2*binomial_3.price_options()["price"] + binomial_2.price_options()["price"]) / (eps ** 2)
+            gamma = (binomial_1.price_options() - 2*binomial_3.price_options() + binomial_2.price_options()) / (eps ** 2)
             return gamma
 
 def theta(type, obj):
@@ -63,12 +63,12 @@ def theta(type, obj):
             return (montecarlo_1.calculate_option_price(montecarlo_1.calculate_stock_price())[0]-
                     montecarlo_2.calculate_option_price(montecarlo_2.calculate_stock_price())[0])*MonteCarlo.N
         case 'BS':
-            bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+            bs = BlackScholes(obj.S, obj.K, obj.sigma, obj.r, obj.T)
             return bs.theta(option_type=obj.option_type)
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, -eps)
             binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, 0)
-            theta = (binomial_1.price_options()["price"] - binomial_2.price_options()["price"]) / eps
+            theta = (binomial_1.price_options() - binomial_2.price_options()) / eps
             return theta
 
 def vega(type, obj):
@@ -85,10 +85,10 @@ def vega(type, obj):
             return (montecarlo_1.calculate_option_price(montecarlo_1.calculate_stock_price())[0]-
                     montecarlo_2.calculate_option_price(montecarlo_2.calculate_stock_price())[0])/(obj.vol*(obj.T/MonteCarlo.N))
         case 'BS':
-             bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+             bs = BlackScholes(obj.S, obj.K, obj.sigma, obj.r, obj.T)
              return bs.vega()
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, 0, eps)
             binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, 0, -eps)
-            vega = (binomial_1.price_options()["price"] - binomial_2.price_options()["price"]) / (2 * eps)
+            vega = (binomial_1.price_options() - binomial_2.price_options()) / (2 * eps)
             return vega
