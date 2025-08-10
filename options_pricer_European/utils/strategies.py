@@ -207,7 +207,7 @@ def Bear_Put_Spread(S, K1, K2, r, sigma, T, model = "BS", S_max=None, num_points
             - Payoff increases as underlying moves away from the strike, in either direction
             - Hence good strategy if underlying is expecting to move wildly in any direction
 """
-def Straddle(S,K,sigma,r,T,model = "BS", num_points = 100):
+def Straddle(S,K,sigma,r,T,model = "BS", num_points = 100,S_max = None):
 
     # Define stock price range
     S_min = 0
@@ -247,7 +247,7 @@ def Straddle(S,K,sigma,r,T,model = "BS", num_points = 100):
 """Strangle - Buying a call at a lower strike and buying a put at a higher strike
             - Payoff remains constant when underlying remains between K1 and K2, increases when it moves away from it
 """
-def Strangle(S,K1,K2,sigma,r,T,model = "BS", num_points = 100):
+def Strangle(S,K1,K2,sigma,r,T,model = "BS", num_points = 100, S_max = None):
 
     if K2 <= K1:
         print("Invalid input (K2 <= K1 does not hold)")
@@ -292,7 +292,7 @@ def Strangle(S,K1,K2,sigma,r,T,model = "BS", num_points = 100):
 
 """Collar - Selling a call at a higher price to earn some upfront, and buying a put at a lower price to hedge downside movements
 """
-def Collar(S,K1,K2,sigma,r,T,model = "BS", num_points = 100):
+def Collar(S,K1,K2,sigma,r,T,model = "BS", num_points = 100, S_max=None):
 
     if K2 <= K1:
         print("Invalid input (K2 <= K1 does not hold)")
