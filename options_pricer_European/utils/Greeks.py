@@ -50,7 +50,7 @@ def gamma(type, obj):
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, eps)
             binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, -eps)
             binomial_3=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0)
-            gamma = (binomial_1.price_options()["price"] - 2*binomial_3.price_options()["price"] + binomial_2.price_options()["price"]) / (eps ** 2)
+            gamma = (binomial_1.price_options() - 2*binomial_3.price_options() + binomial_2.price_options()) / (eps ** 2)
             return gamma
 
 def theta(type, obj):
@@ -68,7 +68,7 @@ def theta(type, obj):
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, -eps)
             binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, 0)
-            theta = (binomial_1.price_options()["price"] - binomial_2.price_options()["price"]) / eps
+            theta = (binomial_1.price_options() - binomial_2.price_options()) / eps
             return theta
 
 def vega(type, obj):
@@ -90,5 +90,5 @@ def vega(type, obj):
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, 0, eps)
             binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, 0, -eps)
-            vega = (binomial_1.price_options()["price"] - binomial_2.price_options()["price"]) / (2 * eps)
+            vega = (binomial_1.price_options() - binomial_2.price_options()) / (2 * eps)
             return vega
