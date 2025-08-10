@@ -18,9 +18,9 @@ class BlackScholes:
 
     def price(self, option_type):
         if option_type == 'call':
-            return self.S * norm.cdf(self.d1) - self.K * np.exp(-self.r * self.T) * norm.cdf(self.d2)
+            return round(self.S * norm.cdf(self.d1) - self.K * np.exp(-self.r * self.T) * norm.cdf(self.d2),3)
         else:
-            return self.K * np.exp(-self.r * self.T) * norm.cdf(-self.d2) - self.S * norm.cdf(-self.d1)
+            return round(self.K * np.exp(-self.r * self.T) * norm.cdf(-self.d2) - self.S * norm.cdf(-self.d1),3)
 
     def delta(self, option_type):
         return norm.cdf(self.d1) if option_type == 'call' else norm.cdf(self.d1) - 1
