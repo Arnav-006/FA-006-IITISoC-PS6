@@ -24,7 +24,7 @@ def delta(type, obj, dev=0):
             return (montecarlo_1.calculate_option_price(montecarlo_1.calculate_stock_price(), eps)[0]-
                     montecarlo_0.calculate_option_price(montecarlo_0.calculate_stock_price(), 0)[0])/eps
         case 'BS':
-            bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+            bs = BlackScholes(obj.S, obj.K, obj.sigma, obj.r, obj.T)
             return bs.delta(option_type=obj.option_type)
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, eps)
@@ -44,7 +44,7 @@ def gamma(type, obj):
             """
             return (delta_2 - delta_1) / (2*eps)
         case 'BS':
-            bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+            bs = BlackScholes(obj.S, obj.K, obj.sigma, obj.r, obj.T)
             return bs.gamma()
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, eps)
@@ -63,7 +63,7 @@ def theta(type, obj):
             return (montecarlo_1.calculate_option_price(montecarlo_1.calculate_stock_price())[0]-
                     montecarlo_2.calculate_option_price(montecarlo_2.calculate_stock_price())[0])*MonteCarlo.N
         case 'BS':
-            bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+            bs = BlackScholes(obj.S, obj.K, obj.sigma, obj.r, obj.T)
             return bs.theta(option_type=obj.option_type)
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, -eps)
@@ -85,7 +85,7 @@ def vega(type, obj):
             return (montecarlo_1.calculate_option_price(montecarlo_1.calculate_stock_price())[0]-
                     montecarlo_2.calculate_option_price(montecarlo_2.calculate_stock_price())[0])/(obj.vol*(obj.T/MonteCarlo.N))
         case 'BS':
-             bs = BlackScholes(obj.S, obj.K, obj.vol, obj.r, obj.T)
+             bs = BlackScholes(obj.S, obj.K, obj.sigma, obj.r, obj.T)
              return bs.vega()
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, 0, 0, eps)
