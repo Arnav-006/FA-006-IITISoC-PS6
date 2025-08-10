@@ -29,7 +29,7 @@ def delta(type, obj, dev=0):
         case 'BOPM':
             binomial_1=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, eps)
             binomial_2=Binomial(obj.S, obj.K, obj.sigma, obj.r, obj.T, obj.option_type, -eps)
-            delta = (binomial_1.price_options()["price"] - binomial_2.price_options()["price"]) / (2 * eps)
+            delta = (binomial_1.price_options() - binomial_2.price_options()) / (2 * eps)
             return delta
 
 def gamma(type, obj):
