@@ -35,8 +35,7 @@ class MonteCarloAmerican():
         mc = MonteCarlo(self.S, self.K, self.vol, self.r, self.T, 'put')
 
         """
-        calculate_stock_price() is expected to yield - average stock price (using Antithetic Variance Reduction) and cv (control 
-        variate using delta hedging)
+        calculate_stock_price() is expected to yield - average stock price and cv (control variate using delta hedging)
         """
         ST, cv = mc.calculate_stock_price()     # Stock price and delta hedging control variate
 
@@ -44,6 +43,7 @@ class MonteCarloAmerican():
 
     def intrinsic_value(self, ST, cv):
         CF = np.maximum(self.K - ST, 0) + cv
+        
         return CF
 
     def backtrack(self):

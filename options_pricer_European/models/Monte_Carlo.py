@@ -216,7 +216,7 @@ class MonteCarlo:
         return C0, SE
     
     
-mc=MonteCarlo(S=101.15, K=98.01, vol=0.0991, r=0.015, T=0.164, option_type='call')    
-print(f"Option Price: {mc.simulate()[0]}")
-print(f"Standard Error: {mc.simulate()[1]}")
+# mc=MonteCarlo(S=101.15, K=98.01, vol=0.0991, r=0.015, T=0.164, option_type='call')    
+# print(f"Option Price: {mc.simulate()[0]}")
+# print(f"Standard Error: {mc.simulate()[1]}")
 
