@@ -54,8 +54,7 @@ class MonteCarlo:
     @classmethod
     def from_csv_simulate(self, cls, csv_path, K, r, T, option_type, N=1000, M=10000,
                  date_column='Date', price_column='Close',
-                 trading_days=252,
-                 distribution=stats.norm):
+                 trading_days=252):
         try:
             data = pd.read_csv(csv_path)
         except FileNotFoundError:
@@ -133,7 +132,7 @@ class MonteCarlo:
     Further build-up on the control variates method to reduce variance:
     """
 
-    def calculate_option_price(self, ST, cv):
+    def calculate_option_price(self, ST, cv=None):
         if self.option_type == 'call':
             #For call option
             CT = np.maximum(0, ST[-1] - self.K) + self.beta1*cv[-1]

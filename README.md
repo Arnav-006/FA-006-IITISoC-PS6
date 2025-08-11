@@ -329,6 +329,26 @@ mcModel = MonteCarlo(S=101.15, K=98.01, vol=0.90, r=0.02, T=0.14, option_type='c
     - Parameters : ```None```
     - Returns : ```None```
 
+- #### from_csv_simulate()
+    - Could be used when the user doesn't have a volatility value for the stock data
+    - Accepts link to the csv data of stock prices and computes the historical volatility
+    - The computed volatility value is then assumed as the present volatility for pricing the option (given the stock data is recent)
+    - This function is a standalone function and **can be invoked directly (not through the object)** to obtain the option price and the standard error; unlike other functions such as ```calculate_stock_price()```, ```calculate_option_price()```, whose operation is meaningful only when called through the method ```simulate()```.
+    - Parameters: 
+        - ```csv_path```: accepts the path to the stock price data file
+        - ```K```: strike price
+        - ```r```: risk-free interest rate
+        - ```T```: time to maturity
+        - ```option_type```: option type ("call" or "put")
+        - ```N```: number of time steps 
+        - ```M```: number of simulations 
+        - ```date_column```: column containing the dates in the matrix
+        - ```price_column```: column containing the prices in the matrix
+        - ```trading_days```: number of trading days of the data in the matrix 
+    - Returns: 
+        - ```C0```: option price
+        - ```SE```: standard error
+
 - #### calculate_stock_price()
     - Calculates the stock price using the equation for Brownian Motion.
     - Parameters : ```None```
