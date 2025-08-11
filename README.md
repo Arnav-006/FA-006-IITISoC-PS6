@@ -459,14 +459,14 @@ price, stderr = heston_model.price()
 
 #### Methods
 
-* #### simulate\_paths()
+* #### simulate()
 
   * Simulates stock and variance paths under the Heston model using the Euler-Maruyama method.
   * Uses two correlated normal random variables at each time step.
   * Returns:
 
-    * `S_paths` (np.ndarray): Simulated paths for stock prices
-    * `v_paths` (np.ndarray): Simulated paths for variances
+    * `S` (np.ndarray): Simulated paths for stock prices
+    * `v` (np.ndarray): Simulated paths for variances
 
 * #### price()
 
@@ -474,8 +474,8 @@ price, stderr = heston_model.price()
   * Computes the discounted payoff at maturity.
   * Returns:
 
-    * Estimated option price
-    * Standard error of the estimate
+    * `C0`: Estimated option price
+    * `SE`:Standard error of the estimate
 
 ---
 <br>
@@ -529,7 +529,7 @@ mcv = MC_Visualiser(mc)
     - Returns : ```None```
 
 - #### probability_distribution()
-    - Helps visulalise the distribution of predicted prices and the closeness of the theoretical value to the market value
+    - Helps visualise the distribution of predicted prices and the closeness of the theoretical value to the market value
     - Parameters : ```market_value``` (of a sample option at maturity)
     - Returns : ```None```
 
@@ -547,7 +547,7 @@ mcv = MC_Visualiser(mc)
 Various visualization tools are provided for European options using the Black-Scholes model, implemented using
 the BlackScholes class under models.
 
-*class* BSOptionsVisualizer
+#### *class* BSOptionsVisualizer
 
 *module* - **options_pricer_European.utils.Visualization_Tools_Black_Scholes**
 

@@ -10,15 +10,15 @@ The plan is to implement the greek functions on the objects of the models which 
 passed into their constructors.
 """
 eps=0.01
-def delta(type, obj, dev=0):
+def delta(type, obj):
     match type:
         case 'MC':
             """
             Functions to compute option price will be implemented on the object 'montecarlo' of class
             MonteCarlo
             """
-            montecarlo_0=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, 0+dev)
-            montecarlo_1=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, eps+dev)
+            montecarlo_0=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, 0)
+            montecarlo_1=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type, eps)
 
             # Change of $1 assumed in the stock price
             return (montecarlo_1.calculate_option_price(montecarlo_1.calculate_stock_price(), eps)[0]-

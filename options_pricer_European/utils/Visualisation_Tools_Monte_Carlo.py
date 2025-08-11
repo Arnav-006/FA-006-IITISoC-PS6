@@ -10,7 +10,7 @@ from options_pricer_European.utils.Greeks import delta, gamma, vega, theta
 
 class MC_Visualiser:
     def __init__(self, obj):        
-        self.mc=MonteCarlo(obj.S, obj.K, obj.vol, obj.r, obj.T, obj.option_type)
+        self.mc=obj
 
     def visualise_greeks(self,type):
         stock_data= (np.exp(self.mc.calculate_stock_price()[0]) + np.exp(self.mc.calculate_stock_price()[1]))*0.5

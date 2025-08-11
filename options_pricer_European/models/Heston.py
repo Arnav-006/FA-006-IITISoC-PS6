@@ -58,7 +58,7 @@ class Heston:
         self.paths = paths
         self.dt = T / steps
 
-    def simulate_paths(self):
+    def simulate(self):
         """
         Simulates the paths for both the stock price (S) and its variance (v).
 
@@ -107,3 +107,44 @@ class Heston:
             )
 
         return S, v
+    
+    def price(self):
+        """
+        Calculates the European option price using the simulated Heston paths.
+
+        This method first simulates the stock and variance paths and then calculates
+        the discounted average payoff of the option at maturity.
+
+        Returns:
+        -------
+        tuple[float, float]
+            A tuple containing:
+            - The estimated option price.
+            - The standard error of the estimated price.
+
+        Raises:
+        ------
+        ValueError
+            If the `option_type` is not 'call' or 'put'.
+        """
+        # 1. Simulate the paths for the stock price
+        S, _ = self.simulate_paths()
+
+        # 2. Get the terminal stock prices from the last time step
+        ST = S[:, -1]
+
+        # 3. Calculate the option payoff for each path
+        if self.option_type.lower() == 'call':
+            payoffs = np.maximum(0, ST - self.K)
+        elif self.option_type.lower() == 'put':
+            payoffs = np.maximum(0, self.K - ST)
+        else:
+            raise ValueError("option_type must be 'call' or 'put'")
+
+        # 4. Discount payoffs and calculate the final price and standard error
+        discounted_payoffs = np.exp(-self.r * self.T) * payoffs
+        C0 = np.mean(discounted_payoffs)
+        SE = np.std(discounted_payoffs, ddof=1) / np.sqrt(self.paths)
+
+        return C0, SE
+
