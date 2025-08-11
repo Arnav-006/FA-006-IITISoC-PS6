@@ -1,9 +1,7 @@
 
 
 # FA-006-IITISoC-PS6
-This repository contains an extensive python package for pricing options.
-📈 Black-Scholes Option Pricing Model
-This repository implements the Black-Scholes model to price European call and put options, along with visualizations of various Greeks (Delta, Gamma, Vega, Theta, Rho) and time-based animations. It is designed for interactive use in Google Colab and VS Code with support for Plotly, Matplotlib, and NumPy.
+This repository contains an extensive Python package for pricing options. It implements various mathematical models - Monte Carlo, Binomial, Black Scholes and Heston to price European, American and Asian category options. It possesses Greek calculation functions, visualisation features showing the evolution of stock price over time (in a Monte Carlo model), implied volatility calculation and trading strategy modelling.
 
 # 🔧 Features
 
@@ -1443,5 +1441,6 @@ price, std_err = model.price()
 * **Raises**
 
   * `ValueError` if the option type is not `'call'` or `'put'`.
+
 
 
