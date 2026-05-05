@@ -8,7 +8,7 @@ authors = [
     { name="Mihir Jain", git id="sunmjr"},
     { name="Aayush Sharma", git id="sunio-bhatto"},
     { name="Rudra Vavadiya", git id="Vavadiya-Rudra-Bhaveshbhai"},
-    { name="Ojashvi Jain", git id="Ojhasvi-jain""}
+    { name="Ojashvi Jain", git id="Ojashvi-jain""}
 
     ]
 dependencies = [
